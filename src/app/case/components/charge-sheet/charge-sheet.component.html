@@ -1,0 +1,187 @@
+<mat-card style="margin-left: 2em; margin-right: 2em">
+  <mat-card-content>
+    <mat-toolbar style="background-color: #000000">
+      <mat-card-title style="color: white">Prepare Charge Sheet</mat-card-title>
+    </mat-toolbar>
+    <hr />
+    <mat-slide-toggle (click)="changeFormFeild()">{{ choosenForm }}</mat-slide-toggle>
+    <mat-slide-toggle style="float: right" (click)="changeLangauge()">{{ langauge }}</mat-slide-toggle>
+    <form class="form-horizontal" [formGroup]="chargeSheetForm">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Case Name<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Case Name</mat-label>
+            <textarea matInput formControlName="caseName"></textarea>
+            <mat-error *ngIf="validateForm('caseName', 'required')">Offence is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Defendant (s) (ཉེས་འཛུགས་ཅན)<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Defendant (s)</mat-label>
+            <textarea matInput formControlName="defendent"></textarea>
+            <mat-error *ngIf="validateForm('defendent', 'required')">Offence is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="hideFormField === 'criminal'">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Offence (རྩོད་དོནཿ)<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Offence</mat-label>
+            <textarea matInput formControlName="offence"></textarea>
+            <mat-error *ngIf="validateForm('offence', 'required')">Offence is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Court<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Court</mat-label>
+            <textarea matInput formControlName="court"></textarea>
+            <mat-error *ngIf="validateForm('offence', 'required')">Court is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Addressed To<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Addressed To</mat-label>
+            <textarea matInput formControlName="addressedTo"></textarea>
+            <mat-error *ngIf="validateForm('addressedTo', 'required')">Addressed To is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >May it please your honour<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>May it please your honour </mat-label>
+            <textarea matInput formControlName="salutation"></textarea>
+            <mat-error *ngIf="validateForm('salutation', 'required')">field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Jurisdiction (ས་ཁྱོན་དབང་ཁྱབ)<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Jurisdiction</mat-label>
+            <textarea matInput formControlName="jurisdiction"></textarea>
+            <mat-error *ngIf="validateForm('jurisdiction', 'required')">field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Facts of the case (ཉེས་འཛུགས)<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Facts of the case</mat-label>
+            <textarea matInput formControlName="factsOfCase"></textarea>
+            <mat-error *ngIf="validateForm('factsOfCase', 'required')">field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="hideFormField === 'criminal'">
+        <label class="col-md-3 col-form-label" for="text-input">Charges<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Charges</mat-label>
+            <textarea matInput formControlName="charges"></textarea>
+            <mat-error *ngIf="validateForm('charges', 'required')">Charges is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="hideFormField === 'civil'">
+        <label class="col-md-3 col-form-label" for="text-input">Restitution<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Restitution</mat-label>
+            <textarea matInput formControlName="restitution"></textarea>
+            <mat-error *ngIf="validateForm('restitution', 'required')">field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="hideFormField === 'civil'">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Property Attachment<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Property Attachment</mat-label>
+            <textarea matInput formControlName="propertyAttachment"></textarea>
+            <mat-error *ngIf="validateForm('propertyAttachment', 'required')">field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Prayers (གསོལ་འདེབས)<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Prayers</mat-label>
+            <textarea matInput formControlName="prayers"></textarea>
+            <mat-error *ngIf="validateForm('prayers', 'required')">field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Prosecutor<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Prosecutor</mat-label>
+            <textarea matInput formControlName="prosecutor"></textarea>
+            <mat-error *ngIf="validateForm('prosecutor', 'required')">field is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <br />
+    <mat-card-footer>
+      <div class="col-md-9" style="padding-bottom: 10px">
+        <button mat-raised-button color="primary" [disabled]="!chargeSheetForm.valid" (click)="generateChargeSheet()">
+          Generate document
+        </button>
+        <button mat-stroked-button color="warn" (click)="resetChargeSheetForm()">Reset</button>
+      </div>
+    </mat-card-footer>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="showChargeSheetUploadButton">
+  <mat-card-content>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="text-input"
+        >Attach Charge Sheet<span class="text-danger">*</span>:</label
+      >
+      <div class="col-md-9">
+        <input type="file" id="file" (change)="uploadDocument($event.target.files)" />
+        <button mat-icon-button color="primary" type="file" id="file" (click)="uploadDocumentConfirm()">
+          <span style="padding-left: 5px; color: black">
+            <button mat-raised-button color="accent">upload</button>
+          </span>
+        </button>
+      </div>
+    </div>
+    <div class="form-group row" style="padding-bottom: 10px">
+      <div class="col-md-9">
+        <button mat-raised-button color="primary" (click)="saveChargeSheet()" *ngIf="showSubmitButton">Porceed</button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

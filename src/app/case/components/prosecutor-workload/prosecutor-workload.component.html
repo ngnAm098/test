@@ -1,0 +1,267 @@
+<mat-accordion *ngIf="caseDetails">
+  <div *ngIf="formKey !== 'RETURN-CASE-BY-AG-EXAMINE-FACTS'">
+    <!-- Review Facts -->
+    <div *ngIf="reviewFacts">
+      <form fxLayout="column" [formGroup]="examinationForm">
+        <div>
+          <label class="form-label" style="padding: 0px 90px 0px 29px">Is Review of facts Ok?</label>
+          <mat-radio-group formControlName="examinationFact">
+            <mat-radio-button value="Y">Yes</mat-radio-button>
+            <mat-radio-button value="N">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Justification</mat-label>
+              <textarea
+                type="text"
+                matInput
+                formControlName="examinationFactComment"
+                rows="3"
+                placeholder="Give justification"
+              >
+              </textarea>
+              <mat-error>Comment is required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <div fxLayout="row" fxLayoutAlign="center center" *ngIf="formKey === 'REVIEW-FACTS'">
+        <button
+          mat-raised-button
+          type="button"
+          color="primary"
+          [disabled]="!examinationForm.valid"
+          (click)="completeExaminationTask()"
+        >
+          <mat-icon>assignment</mat-icon> Proceed
+        </button>
+      </div>
+    </div>
+    <!-- Due Process -->
+    <div *ngIf="dueProcessFormShow">
+      <form fxLayout="column" [formGroup]="dueProcessForm">
+        <div>
+          <label class="form-label" style="padding: 0px 90px 0px 29px">Is due process followed?</label>
+          <mat-radio-group class="form-label" formControlName="dueProcess" required>
+            <mat-radio-button value="Y">Yes</mat-radio-button>
+            <mat-radio-button value="N">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Justification</mat-label>
+              <textarea
+                type="text"
+                matInput
+                rows="3"
+                formControlName="dueProcessComment"
+                placeholder="Give justification"
+              ></textarea>
+              <mat-error>justification is required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <div fxLayout="row" fxLayoutAlign="center center" *ngIf="formKey === 'DUE-PROCESS'">
+        <button
+          mat-raised-button
+          type="button"
+          color="primary"
+          [disabled]="!dueProcessForm.valid"
+          (click)="completeDueProcessTask()"
+        >
+          <mat-icon>assignment</mat-icon> Proceed
+        </button>
+      </div>
+    </div>
+    <!-- assess Evidence comment -->
+    <div *ngIf="examineReview">
+      <form fxLayout="column" [formGroup]="assessEvidenceForm">
+        <div>
+          <label class="form-label" style="padding: 0px 10px 0px 29px"
+            >Is evidential and public interest test fulfilled?</label
+          >
+          <mat-radio-group class="form-label" (change)="checkDueProcess()" formControlName="assessEvidence" required>
+            <mat-radio-button value="Y">Yes</mat-radio-button>
+            <mat-radio-button value="N">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="form-group row">
+          <div *ngIf="moreEvidence">
+            <mat-form-field class="form-label col-md-12" appearance="outline" style="width: 300px" required>
+              <mat-label>Choose an option</mat-label>
+              <mat-select formControlName="moreEvidence">
+                <mat-option value="Request for more evidence">Request for more evidence</mat-option>
+                <mat-option value="returnCase">Return the case</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Justification</mat-label>
+              <textarea
+                type="text"
+                rows="3"
+                matInput
+                formControlName="assessEvidenceComment"
+                placeholder="Give justification"
+              ></textarea>
+              <mat-error>justification is required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <div fxLayout="row" fxLayoutAlign="center center" *ngIf="formKey === 'EXAMINE-EVIDENCE'">
+        <button
+          mat-raised-button
+          type="button"
+          color="primary"
+          [disabled]="!assessEvidenceForm.valid"
+          (click)="completeAssessTask()"
+        >
+          <mat-icon>assignment</mat-icon> Proceed
+        </button>
+      </div>
+    </div>
+    <!-- 	Waiting for more Evidence -->
+    <div *ngIf="formKey === 'Waiting for more Evidence'">
+      <form fxLayout="column" [formGroup]="moreEvidenceForm">
+        <div class="form-group row">
+          <label class="form-label" style="padding: 0px 32px 0px 29px">Return the case?</label>
+          <mat-radio-group class="form-label" formControlName="returnCase" required>
+            <mat-radio-button value="Y">Yes</mat-radio-button>
+            <mat-radio-button value="N">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Justification</mat-label>
+            <textarea
+              type="text"
+              rows="3"
+              matInput
+              formControlName="moreEvidenceComment"
+              placeholder="Give justification"
+            ></textarea>
+            <mat-error>justification is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-group row">
+          <label class="form-label" style="padding: 0px 0px 0px 29px"
+            >Attachment<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-3">
+            <input type="file" formControlName="attachLetter" id="file" (change)="selectFile($event.target.files)" />
+          </div>
+        </div>
+      </form>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <button
+          mat-raised-button
+          type="button"
+          color="primary"
+          [disabled]="!moreEvidenceForm.valid"
+          (click)="addMoreEvidence()"
+        >
+          <mat-icon>assignment</mat-icon> Proceed
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="formKey === 'CHIEF-REVIEW-CASE-RETURN'">
+    <form fxLayout="column" [formGroup]="returnReviewForm">
+      <div>
+        <label class="form-label" style="padding: 0px 0px 0px 29px">Return Case?</label>
+        <mat-radio-group class="form-label col-md-6" formControlName="isApproved" required>
+          <mat-radio-button value="Y">Yes</mat-radio-button>
+          <mat-radio-button value="N">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="col-md-9">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Remarks</mat-label>
+          <textarea
+            type="text"
+            rows="3"
+            matInput
+            formControlName="chiefCommentOnDueProcess"
+            placeholder="Remarks"
+          ></textarea>
+          <mat-error>required!</mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button
+        mat-raised-button
+        type="button"
+        color="primary"
+        [disabled]="!returnReviewForm.valid"
+        (click)="caseReview('chief')"
+      >
+        <mat-icon>assignment</mat-icon> Approve
+      </button>
+    </div>
+  </div>
+  <mat-card *ngIf="formKey === 'RETURN-CASE-BY-AG-EXAMINE-FACTS'">
+    <form fxLayout="column" [formGroup]="agReturnReviewForm">
+      <label class="form-label col-md-6">Is case return Approved?</label>
+      <mat-radio-group class="form-label col-md-6" formControlName="isApproved" required>
+        <mat-radio-button value="Y">Yes</mat-radio-button>
+        <mat-radio-button value="N">No</mat-radio-button>
+      </mat-radio-group>
+      <div class="form-group row">
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+            <mat-label>Justification</mat-label>
+            <textarea type="text" matInput formControlName="comment" placeholder="Give justification"> </textarea>
+            <mat-error>Comment is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button
+        mat-raised-button
+        type="button"
+        color="primary"
+        [disabled]="!agReturnReviewForm.valid"
+        (click)="caseReview('agExamineFacts')"
+      >
+        <mat-icon>assignment</mat-icon> Submit
+      </button>
+    </div>
+  </mat-card>
+  <mat-card *ngIf="formKey === 'REVIEW-CASE-RETURN-BY-AG-EXAMINE-EVIDENCE'">
+    <form fxLayout="column" [formGroup]="agReturnReviewForm">
+      <label class="form-label col-md-6">Is case return Approved?</label>
+      <mat-radio-group class="form-label col-md-6" formControlName="isApproved" required>
+        <mat-radio-button value="Y">Yes</mat-radio-button>
+        <mat-radio-button value="N">No</mat-radio-button>
+      </mat-radio-group>
+      <div class="form-group row">
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+            <mat-label>Justification</mat-label>
+            <textarea type="text" matInput formControlName="comment" placeholder="Give justification"> </textarea>
+            <mat-error>Comment is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <button
+        mat-raised-button
+        type="button"
+        color="primary"
+        [disabled]="!agReturnReviewForm.valid"
+        (click)="caseReview('agExamineEvidence')"
+      >
+        <mat-icon>assignment</mat-icon> Submit
+      </button>
+    </div>
+  </mat-card>
+</mat-accordion>

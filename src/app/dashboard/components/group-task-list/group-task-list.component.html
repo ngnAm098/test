@@ -1,0 +1,113 @@
+<mat-card>
+  <mat-toolbar style="background-color: #000000">
+    <mat-card-title style="color: white">Group Pending Tasks</mat-card-title>
+  </mat-toolbar>
+  <mat-card-content>
+    <table mat-table [dataSource]="groupPendingTasks" matSort class="mat-elevation-z1">
+      <ng-container matColumnDef="From">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+        <td mat-cell *matCellDef="let element">{{ element.agency.agencyName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="letterNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter No</th>
+        <td mat-cell *matCellDef="let element">{{ element.letterNo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="letterDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.letterDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Subject">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
+        <td mat-cell *matCellDef="let element">{{ element.subject }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="SenderName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.senderName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ReceiptNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt No</th>
+        <td mat-cell *matCellDef="let element">{{ element.receiptNo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="caseStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Case Status</th>
+        <td mat-cell *matCellDef="let element">{{ element.caseStatus }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="open">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Open</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="loadCaseDetails(element.id)" class="open-button">
+            <mat-icon>markunread_mailbox</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-toolbar style="background-color: #000000">
+    <mat-card-title style="color: white">Your Ongoing Task List</mat-card-title>
+  </mat-toolbar>
+  <mat-card-content>
+    <table mat-table [dataSource]="userOngoingTasks" matSort class="mat-elevation-z1">
+      <ng-container matColumnDef="From">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+        <td mat-cell *matCellDef="let element">{{ element.agency.agencyName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="letterNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter No</th>
+        <td mat-cell *matCellDef="let element">{{ element.letterNo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="letterDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.letterDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="Subject">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
+        <td mat-cell *matCellDef="let element">{{ element.subject }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="SenderName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.senderName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ReceiptNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt No</th>
+        <td mat-cell *matCellDef="let element">{{ element.receiptNo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="caseStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Case Status</th>
+        <td mat-cell *matCellDef="let element">{{ element.caseStatus }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="open">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Open</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button (click)="loadCaseDetails(element.id)" class="open-button">
+            <mat-icon>markunread_mailbox</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </mat-card-content>
+</mat-card>

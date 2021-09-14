@@ -1,0 +1,53 @@
+<div class="dashboard-stat">
+  <mat-card class="dashboard-stat__item">
+    <mat-card-title class="dashboard-stat__title">
+      <h5 class="dashboard-stat__title-text">Under Corpus</h5>
+    </mat-card-title>
+    <mat-card-content class="dashboard-stat-content">
+      <div class="dashboard-stat-content__total-info-wrapper">
+        <div class="dashboard-stat-content__total-info">
+          <p class="dashboard-stat-content__total-info-users">{{ underCorpus.total }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-stat__item">
+    <mat-card-title class="dashboard-stat__title">
+      <h5 class="dashboard-stat__title-text">Ongoing</h5>
+    </mat-card-title>
+    <mat-card-content class="dashboard-stat-content">
+      <div class="dashboard-stat-content__total-info-wrapper">
+        <div class="dashboard-stat-content__total-info">
+          <p class="dashboard-stat-content__total-info-users">{{ ongoing.total }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-stat__item">
+    <mat-card-title class="dashboard-stat__title">
+      <h5 class="dashboard-stat__title-text">Appealed</h5>
+    </mat-card-title>
+    <mat-card-content class="dashboard-stat-content">
+      <div class="dashboard-stat-content__total-info-wrapper">
+        <div class="dashboard-stat-content__total-info">
+          <p class="dashboard-stat-content__total-info-users">{{ appealed.total }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-stat__item">
+    <mat-card-title class="dashboard-stat__title">
+      <h5 class="dashboard-stat__title-text">Closed</h5>
+    </mat-card-title>
+    <mat-card-content class="dashboard-stat-content">
+      <div class="dashboard-stat-content__total-info-wrapper">
+        <div class="dashboard-stat-content__total-info">
+          <p class="dashboard-stat-content__total-info-users">{{ closed.total }}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,25 @@
+<mat-toolbar style="background-color: #000000">
+  <mat-card-title style="color: white">Enforcement Follow Up</mat-card-title> 
+</mat-toolbar><hr/>
+<mat-dialog-content class="mat-typography"> 
+  <p>This is to keep record of whole case for further use.</p><hr/>
+  <form fxLayout="column" [formGroup]="enforcementForm"> 
+    <div fxFlex="1 0 auto" fxLayout="column"> 
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Action</mat-label>
+        <textarea rows="4" matInput formControlName="action" placeholder="Action" required></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field> 
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Remark</mat-label>
+        <textarea rows="4" matInput formControlName="remark" placeholder="Remark" required></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field> 
+    </div> 
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end"> 
+  <button mat-stroked-button color="warn" (click)="resetForm()">Reset</button>
+  <button mat-raised-button color="primary" cdkFocusInitial (click)="saveFollowUp()">Submit</button>
+  <button mat-stroked-button color="warn" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

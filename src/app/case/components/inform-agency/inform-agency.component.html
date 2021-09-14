@@ -1,0 +1,58 @@
+<mat-card style="margin-left: 2em; margin-right: 2em">
+  <mat-card-content>
+    <div class="col-md-10 col-lg-10">
+      <mat-card-title><strong>Close Case</strong></mat-card-title>
+      <hr />
+      <form class="form-horizontal" [formGroup]="agencyForm">
+        <div class="form-row mb-3">
+          <label for="to" class="col-2 col-sm-1 col-form-label">To:</label>
+          <div class="col-10 col-sm-11">
+            <input formControlName="mailTo" type="text" class="form-control" required />
+          </div>
+        </div>
+        <div class="form-row mb-3">
+          <label for="cc" class="col-2 col-sm-1 col-form-label">CC:</label>
+          <div class="col-10 col-sm-11">
+            <input formControlName="mailCc" type="text" class="form-control" required />
+          </div>
+        </div>
+        <div class="form-row mb-3">
+          <label for="cc" class="col-2 col-sm-1 col-form-label">Subject:</label>
+          <div class="col-10 col-sm-11">
+            <input formControlName="mailSubject" type="text" class="form-control" required />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-11 ml-auto">
+            <div class="form-group mt-4">
+              <textarea formControlName="mailBody" class="form-control" rows="12" required></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="file" formControlName="attachment" id="file" (change)="selectFile($event.target.files)" />
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Is enforcement required?<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-radio-group class="form-label col-md-6" formControlName="enforcementRequired" required>
+              <mat-radio-button value="Y">Yes</mat-radio-button>
+              <mat-radio-button value="N">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </form>
+      <br />
+      <mat-card-footer>
+        <div class="col-md-9" style="padding-bottom: 10px">
+          <button mat-raised-button color="primary" [disabled]="!agencyForm.valid" (click)="submitForm()">
+            Submit
+          </button>
+          <button mat-stroked-button color="warn">Reset</button>
+        </div>
+      </mat-card-footer>
+    </div>
+  </mat-card-content>
+</mat-card>

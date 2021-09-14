@@ -1,0 +1,61 @@
+<mat-toolbar class="page-header" role="heading">
+  <h1>Dashboard</h1>
+</mat-toolbar>
+
+<div *ngIf="role !== 'FrontDesk'">
+  <app-stats [underCorpus]="underCorpusData$ | async" [ongoing]="ongoingData$ | async"
+    [appealed]="appealedData$ | async" [closed]="closedData$ | async">
+  </app-stats>
+
+  <!-- <app-task-list 
+  [userPendingTasks]="userPendingTasks$ | async" (details)="openCaseDetails($event)"
+  > </app-task-list>
+ 
+  <app-group-task-list
+    *ngIf="role === 'Prosecutor'"
+    [groupPendingTasks]="groupPendingTasks$ | async"
+    [userOngoingTasks]="userOngoingTasks$ | async"
+    (details)="openCaseDetails($event)"
+  >
+  </app-group-task-list>
+ 
+  <app-monitor-case
+    [caseToMonitor]="caseToMonitor$ | async"
+    *ngIf="role === 'AttorneyGeneral' || role === 'Chief' || role === 'Registrar'"
+  >
+  </app-monitor-case> -->
+
+  <app-pending-case></app-pending-case>
+
+  <div class="charts-wrapper">
+    <div class="chart">
+      <app-upcoming-events></app-upcoming-events>
+    </div>
+    <div class="chart">
+      <app-hall-availability></app-hall-availability>
+    </div>
+    <div class="chart">
+      <app-staff-status [staffStatus]="staffPresentStatus$ | async"></app-staff-status>
+    </div>
+  </div>
+</div>
+<div *ngIf="role === 'FrontDesk'">
+  <div class="charts-wrapper">
+    <div class="chart">
+      <app-event-calendar (refreshUpcomingEventList)="refreshUpcomingEventList($event)"></app-event-calendar>
+    </div>
+    <div class="chart">
+      <app-staff-status [staffStatus]="staffPresentStatus$ | async"></app-staff-status>
+    </div>
+  </div>
+
+  <div class="charts-wrapper">
+    <div class="chart">
+      <app-upcoming-events></app-upcoming-events>
+    </div>
+
+    <div class="chart">
+      <app-hall-availability></app-hall-availability>
+    </div>
+  </div>
+</div>

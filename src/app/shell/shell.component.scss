@@ -1,0 +1,59 @@
+@import "src/app/styles/colors";
+@import "src/app/styles/font";
+@import "src/app/styles/variables";
+
+:host {
+  display: flex;
+  flex: 1;
+}
+
+.mat-sidenav {
+  min-width: 270px;
+  max-width: 28%;
+}
+
+.has-border {
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.mat-list {
+  padding-top: 0;
+}
+
+.mat-list-item {
+  text-decoration: none;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+}
+
+.menu-button {
+  margin-right: 1rem;
+}
+
+.elms {
+  font-family: "Times New Roman", Times, serif;
+  font-style: normal;
+  font-weight: bold;
+  color: whitesmoke;
+  margin-left: 10%;
+}
+
+.header-toolbar {
+  display: flex;
+  align-items: center;
+
+  .unlock-button {
+    border-color: #3cd4a0;
+    margin-right: 16px;
+    text-transform: uppercase;
+    background-color: #3cd4a0;
+    color: white;
+
+    letter-spacing: 0.0892857143em;
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+}

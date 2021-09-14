@@ -1,0 +1,329 @@
+<!-- Defendant Table -->
+<mat-card>
+  <mat-toolbar style="background-color: #000000">
+    <mat-card-title style="color: white">Defendant Details</mat-card-title>
+  </mat-toolbar>
+  <hr />
+  <mat-card-content>
+    <table mat-table [dataSource]="defendantList" matTableFilter matSort>
+      <ng-container matColumnDef="defendantName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Defendant Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.defendantName }}</td>
+      </ng-container>
+      <ng-container matColumnDef="defendantCid">
+        <th mat-header-cell *matHeaderCellDef>Defendant CID</th>
+        <td mat-cell *matCellDef="let element">{{ element.defendantCid }}</td>
+      </ng-container>
+      <ng-container matColumnDef="judgementNo">
+        <th mat-header-cell *matHeaderCellDef>Judgement Number</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.judgementNo === null ? 'Not Updated' : element.judgementNo }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="judgementDate">
+        <th mat-header-cell *matHeaderCellDef>Judgement Date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.judgementDate === null ? 'Not Updated' : (element.judgementDate | date) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="lastAppealDate">
+        <th mat-header-cell *matHeaderCellDef>Last Appeal Date</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.judgementAppealDate === null ? 'Not Updated' : (element.judgementAppealDate | date) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="updatedOn">
+        <th mat-header-cell *matHeaderCellDef>Judgement Updated On</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.judgementUpdatedOn === null ? 'Not Updated' : (element.judgementUpdatedOn | date) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="updateJudgement">
+        <th mat-header-cell *matHeaderCellDef>Judgement</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary">
+            <mat-icon color="primary" (click)="updateDefendentJudgement(element.id, element.defendantName)"
+              >visibility
+            </mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <hr />
+    <div *ngIf="showCloseJudgement" style="padding-top: 25px; font-weight: bold">
+      <div *ngIf="formKey === 'RECEIVE-JUDGMENT'">
+        <label>All the defedants judgement has been followed:</label>
+        <button style="float: right" mat-raised-button color="primary" (click)="submitJudgement()">Proceed</button>
+      </div>
+      <div *ngIf="formKey === 'CHIEF-REVIEW-CASE-OUTCOME'">
+        <label style="padding-right: 20px">Send it to Attorney General<span class="text-danger">*</span>:</label>
+        <mat-radio-group [(ngModel)]="sendCaseToAG">
+          <mat-radio-button value="Y">Yes</mat-radio-button>
+          <mat-radio-button value="N">No</mat-radio-button> </mat-radio-group
+        ><br />
+        <button mat-raised-button color="primary" (click)="caseReviewByChief()">Proceed</button>
+      </div>
+    </div>
+    <div *ngIf="formKey === 'AG-REVIEW-CASE-OUTCOME'">
+      <label style="padding-right: 20px">Do you want to Appeal<span class="text-danger">*</span>:</label>
+      <mat-radio-group [(ngModel)]="appeal">
+        <mat-radio-button value="Y">Yes</mat-radio-button>
+        <mat-radio-button value="N">No</mat-radio-button> </mat-radio-group
+      ><br />
+      <button mat-raised-button color="primary" (click)="caseReviewByAG()">Proceed</button>
+    </div>
+  </mat-card-content>
+</mat-card>
+<!-- Enter Judgement -->
+<div *ngIf="showJudgementForm">
+  <mat-card>
+    <mat-toolbar style="background-color: #000000">
+      <mat-card-title style="color: white">{{ cardTitle }}</mat-card-title>
+    </mat-toolbar>
+    <hr />
+    <mat-card-content>
+      <form [formGroup]="judgementForm">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Addressed To<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Addressed To</mat-label>
+              <input matInput formControlName="addressedTo" required />
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Agency<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Agency</mat-label>
+              <input matInput formControlName="agency" required />
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Dzongkhag<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Choose an option</mat-label>
+              <mat-select formControlName="dzongkhag" required>
+                <mat-option></mat-option>
+                <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.dzongkhagName">
+                  {{ dzongkhag.dzongkhagName }}
+                </mat-option>
+              </mat-select>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Subject<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Subject</mat-label>
+              <input matInput formControlName="subject" required />
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Body<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Body</mat-label>
+              <textarea rows="4" matInput formControlName="body" required></textarea>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Court<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Court</mat-label>
+              <input matInput formControlName="court" required />
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Judgement Number<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Judgement Number</mat-label>
+              <input matInput formControlName="judgementNo" required />
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Judgement Date<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Select a date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [min]="maxDate"
+                formControlName="judgementDate"
+                (click)="picker.open()"
+                readonly
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"> </mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Last Appeal Date<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Last Appeal Date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker1"
+                [min]="maxDate"
+                formControlName="appealDate"
+                (click)="picker1.open()"
+                readonly
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker1"> </mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Defendant Name<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Defendant Name</mat-label>
+              <input matInput formControlName="defendantName" required />
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Charges<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Charges</mat-label>
+              <textarea rows="4" matInput formControlName="charges" required></textarea>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Case Outcome<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Case Outcome</mat-label>
+              <mat-select formControlName="caseOutCome" (selectionChange)="caseOutComeSelected($event.value)" required>
+                <mat-option value="Convicted">Convicted</mat-option>
+                <mat-option value="Acquitted">Acquitted</mat-option>
+                <mat-option value="Deffered">Deffered</mat-option>
+                <mat-option value="othegrounds">Other grounds</mat-option>
+              </mat-select>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row" *ngIf="showOtherGround">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Other grounds<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Please fill up the field for Other grounds</mat-label>
+              <textarea rows="4" matInput formControlName="otherGrounds" required></textarea>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Sentencing Range<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Sentencing Range</mat-label>
+              <textarea rows="4" matInput formControlName="sentencingRange" required></textarea>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Remarks<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Remarks</mat-label>
+              <textarea rows="4" matInput formControlName="judgementRemark" required></textarea>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <div class="form-group row" *ngIf="downloadJudgement">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Attached Judegement<span class="text-danger">*</span>:</label
+        >
+        <div *ngFor="let element of caseAttachment">
+          <div
+            class="col-md-12"
+            (click)="downloadCaseJudgment(element.id, element.documentName)"
+            style="cursor: pointer; color: blue; text-decoration: underline"
+          >
+            {{ element.documentName }}
+          </div>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="formKey === 'RECEIVE-JUDGMENT'">
+        <div class="col-md-12">
+          <button
+            color="primary"
+            mat-raised-button
+            [disabled]="!judgementForm.valid"
+            (click)="generateJudgementReport()"
+          >
+            Generate document
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <!-- Only For Prosecutor-->
+  <mat-card *ngIf="showSubmitJudgement">
+    <mat-card-content>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Judgement Attachment<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <input type="file" id="file" (change)="uploadDocument($event.target.files)" />
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-12">
+          <button color="primary" style="float: right" mat-raised-button (click)="saveJudgement()">Proceed</button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

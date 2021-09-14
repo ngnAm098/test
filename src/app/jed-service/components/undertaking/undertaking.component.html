@@ -1,0 +1,288 @@
+<mat-toolbar style="background-color: #000000">
+    <mat-card-title style="color: white">Undertaking</mat-card-title>
+</mat-toolbar>
+<hr />
+<mat-dialog-content class="mat-typography">
+    <div class="col-md-12 col-lg-12">
+        <form class="form-horizontal form" [formGroup]="undertakingForm">
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Defendant Name<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Defendant Name</mat-label>
+                        <input matInput formControlName="defendantName" required />
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Gender<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="gender">
+                            <mat-option value="male">Male</mat-option>
+                            <mat-option value="female">Female</mat-option>
+                        </mat-select>
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input"> Date Of Birth <span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select a date</mat-label>
+                        <input matInput [matDatepicker]="picker3" [max]="maxDate" formControlName="dob"
+                            (click)="picker3.open()" readonly />
+                        <mat-datepicker-toggle matSuffix [for]="picker3"> </mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
+                        <mat-error>required</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">CID/Passport No/Permit No<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>CID/Passport No/Permit No</mat-label>
+                        <input matInput maxlength="11" maxlength="11" formControlName="cid" required />
+                        <mat-error *ngIf="undertakingForm.controls['cid'].hasError('minlength')">
+                            CID number cannot be less then 11 digits
+                        </mat-error>
+                        <mat-error *ngIf="undertakingForm.controls['cid'].hasError('required')">
+                            CID is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Contact Number<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Contact Number</mat-label>
+                        <input matInput type="tel" minlength="8" maxlength="8" formControlName="defendantContactNo"
+                            required />
+                        <mat-error *ngIf="undertakingForm.controls['defendantContactNo'].hasError('required')">
+                            Contact Number is required
+                        </mat-error>
+                        <mat-error *ngIf="undertakingForm.controls['defendantContactNo'].hasError('minlength')">
+                            Contact Number cannot be less then 8 digits
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Parent Name<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Parent Name</mat-label>
+                        <input matInput formControlName="defendantParentName" required />
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Dzongkhag<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Dzongkhag</mat-label>
+                        <mat-select formControlName="dzongkhagId" (selectionChange)="getGewogs($event.value)" required>
+                            <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">{{
+                                dzongkhag.dzongkhagName
+                                }}</mat-option>
+                        </mat-select>
+                        <mat-error> Dzongkhag required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Gewog<span class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Gewog</mat-label>
+                        <mat-select formControlName="gewogId" (selectionChange)="getVillages($event.value)" required>
+                            <mat-option *ngFor="let gewog of gewogs" [value]="gewog.id">{{ gewog.gewogName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error> Gewog required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Village<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Village</mat-label>
+                        <mat-select formControlName="villageId" required>
+                            <mat-option *ngFor="let village of villages" [value]="village.id">{{ village.villageName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Occupation<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Occupation</mat-label>
+                        <input matInput formControlName="occupation" required />
+                        <mat-error> Occupation Required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Judgement No<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Judgement No</mat-label>
+                        <input matInput formControlName="judgementNo" required />
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input"> Judgement Date <span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select a date</mat-label>
+                        <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="judgementDate"
+                            (click)="picker.open()" readonly />
+                        <mat-datepicker-toggle matSuffix [for]="picker"> </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                        <mat-error>required</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input"> Extension Date <span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Select a date</mat-label>
+                        <input matInput [matDatepicker]="picker6" [min]="maxDate" formControlName="extensionDate"
+                            (click)="picker6.open()" readonly />
+                        <mat-datepicker-toggle matSuffix [for]="picker6"> </mat-datepicker-toggle>
+                        <mat-datepicker #picker6></mat-datepicker>
+                        <mat-error>required</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Witness Name<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Witness Name</mat-label>
+                        <input matInput formControlName="witnessName" required />
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Withness Cid<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Witness CId</mat-label>
+                        <input type="tel" matInput maxlength="11" maxlength="11" formControlName="witnessCid"
+                            required />
+                        <mat-error *ngIf="undertakingForm.controls['witnessCid'].hasError('minlength')">
+                            CID number cannot be less then 11 digits
+                        </mat-error>
+                        <mat-error *ngIf="undertakingForm.controls['witnessCid'].hasError('required')">
+                            CID is
+                            <strong>required</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Withness Contact Number<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Witness Contact Number</mat-label>
+                        <input type="tel" minlength="8" maxlength="8" matInput formControlName="witnessContactNo"
+                            required />
+                        <mat-error *ngIf="undertakingForm.controls['witnessContactNo'].hasError('required')">
+                            Contact Number is required
+                        </mat-error>
+                        <mat-error *ngIf="undertakingForm.controls['witnessContactNo'].hasError('minlength')">
+                            Contact Number cannot be less then 8 digits
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Place<span class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Place</mat-label>
+                        <input matInput formControlName="place" required />
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Attorney Name<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Attorney Name</mat-label>
+                        <input matInput formControlName="attorney" required />
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 col-form-label" for="text-input">Statement<span
+                        class="text-danger">*</span>:</label>
+                <div class="col-md-8">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Statement</mat-label>
+                        <textarea rows="5" matInput formControlName="statement" required></textarea>
+                        <mat-error>required!</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </form>
+        <div class="example-button-row">
+            <button mat-raised-button color="primary" (click)="generateUndertaking()">
+                Generate Undertaking
+            </button>
+        </div>
+    </div>
+</mat-dialog-content>
+<hr />
+<mat-dialog-actions align="end">
+    <button mat-stroked-button color="warn" (click)="onDismiss()">
+        <mat-icon>close</mat-icon>Cancel
+    </button>
+    <button mat-raised-button color="primary" (click)="saveUndertaking()">
+        Save Undertaking
+    </button>
+</mat-dialog-actions>

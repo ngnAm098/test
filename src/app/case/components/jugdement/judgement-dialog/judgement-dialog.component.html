@@ -1,0 +1,23 @@
+<mat-toolbar style="background-color: #000000">
+  <mat-card-title style="color: white">Submit Case Judgement</mat-card-title>
+</mat-toolbar>
+<hr />
+<mat-dialog-content>
+  <form [formGroup]="judgementForm">
+    <div class="form-group row">
+      <label class="col-md" style="font-weight: bold" for="text-input">{{ message }}:</label>
+      <div class="col-md">
+        <mat-radio-group formControlName="subCorpus" required>
+          <mat-radio-button value="Y">Yes</mat-radio-button>
+          <mat-radio-button value="N">No</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button color="primary" mat-raised-button [disabled]="!judgementForm.valid" (click)="submitJudgement()">
+    Submit
+  </button>
+  <button mat-stroked-button color="warn" (click)="onNoClick()">Cancel</button>
+</mat-dialog-actions>

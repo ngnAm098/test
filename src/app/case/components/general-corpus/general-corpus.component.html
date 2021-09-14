@@ -1,0 +1,209 @@
+<mat-toolbar style="background-color: #000000">
+  <mat-card-title style="color: white">General Screening Corpus</mat-card-title>
+</mat-toolbar>
+<hr />
+<!-- Case Detail -->
+<div class="container-fluid">
+  <div *ngIf="caseDetails">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="control-label"><strong>Case Name</strong></div>
+        <div class="control-label">{{ caseDetails.caseName }}</div>
+      </div>
+      <div class="col-md-3">
+        <div class="control-label"><strong> Case No.</strong></div>
+        <div class="control-label">{{ caseDetails.referralCaseNo }}</div>
+      </div>
+      <div class="col-md-3">
+        <div class="control-label"><strong>Offence</strong></div>
+        <div class="control-label">{{ caseDetails.offence }}</div>
+      </div>
+      <div class="col-md-3">
+        <div class="control-label"><strong>Jurisdiction</strong></div>
+        <div class="control-label">{{ caseDetails.jurisdiction.jurisdictionName }}</div>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="row">
+    <div *ngFor="let defendant of defendants" class="col-md-3">
+      <div class="control-label"><strong>Defendant Name</strong></div>
+      <div class="control-label">{{ defendant.defendantName }}</div>
+    </div>
+    <div *ngIf="investigationOfficerDetails" class="col-md-3">
+      <div class="control-label"><strong>Police Station</strong></div>
+      <div class="control-label">{{ investigationOfficerDetails.policeStation.policeStationName }}</div>
+    </div>
+  </div>
+</div>
+<hr />
+<!-- Table -->
+<div>
+  <div align="center">
+    <mat-card-title>List of Corpus Mintues Of Meeting</mat-card-title>
+  </div>
+  <div style="float: right; padding-bottom: 15px">
+    <button *ngIf="formKey !== 'AG-REVIEW-CORPUS-MOM'" mat-raised-button color="primary" (click)="openForm()">
+      Open Mintues Of Meeting Form
+    </button>
+  </div>
+  <table mat-table [dataSource]="generalCorpusMeetingDetails" matSort class="mat-elevation-z1">
+    <ng-container matColumnDef="SlNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sl.No</th>
+      <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="corpusPresidedBy">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Corpus Presided By</th>
+      <td mat-cell *matCellDef="let element">{{ element.presidedBy }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="facts">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Facts</th>
+      <td mat-cell *matCellDef="let element">{{ element.briefFact }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="corpusMembers">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Corpus Members</th>
+      <td mat-cell *matCellDef="let element">{{ element.member }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="issuesDiscussed">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Issues Discussed</th>
+      <td mat-cell *matCellDef="let element">{{ element.issue }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="corpusRecommendation">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Corpus Recommendation</th>
+      <td mat-cell *matCellDef="let element">{{ element.recommendation }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="remarksByAG">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Remarks By AG</th>
+      <td mat-cell *matCellDef="let element">{{ element.remark }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit/View</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="editGeneralCorpusMeetingDetails(element.id)" class="edit-button">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+<hr />
+<div *ngIf="formKey === 'AG-REVIEW-CORPUS-MOM'">
+  <form class="form-horizontal" [formGroup]="reviewCorpusForm">
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Please select an option to proceed further</mat-label>
+      <mat-select formControlName="caseCategory" name="caseCategory">
+        <mat-option value="PROSECUTE">Prosecute</mat-option>
+        <mat-option value="DROP">Drop</mat-option>
+        <mat-option value="RECONVENE">Reconvene</mat-option>
+      </mat-select>
+      <mat-error>required!</mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" [disabled]="!reviewCorpusForm.valid" (click)="reviewCorpusMOM()">
+      Approve
+    </button>
+  </form>
+</div>
+<!-- Form -->
+<div *ngIf="showMOMForm" id="sectionForm">
+  <div align="center">
+    <mat-card-title>Mintues Of Meeting Form</mat-card-title>
+  </div>
+  <form class="form-horizontal" [formGroup]="caseScreeningForm">
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Corpus Presided By</mat-label>
+      <input
+        [readonly]="isReadOnly"
+        matInput
+        formControlName="presidedBy"
+        name="CorpusPresidedBy"
+        required
+        placeholder="Corpus Presided By"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Facts</mat-label>
+      <textarea
+        rows="4"
+        [readonly]="isReadOnly"
+        matInput
+        placeholder="briefFact"
+        formControlName="briefFact"
+      ></textarea>
+      <mat-error *ngIf="checkCaseScreenCtr('briefFact', 'required')">Facts is required </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Corpus Members</mat-label>
+      <mat-select multiple formControlName="member">
+        <mat-option *ngFor="let element of corpusMemberList" [value]="element.memberName">
+          {{ element.memberName }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="checkCaseScreenCtr('member', 'required')">Member is required</mat-error>
+    </mat-form-field>
+    <!-- <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Selected Corpus Members</mat-label>
+      <input matInput formControlName="selectedGroupMember" name="selectedGroupMember" readonly />
+    </mat-form-field>  -->
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Issues Discussed </mat-label>
+      <textarea
+        rows="4"
+        [readonly]="isReadOnly"
+        matInput
+        placeholder="Issues Discussed"
+        formControlName="issue"
+      ></textarea>
+      <mat-error *ngIf="checkCaseScreenCtr('issue', 'required')">Case Number is required</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Recommendation by Corpus</mat-label>
+      <textarea
+        rows="4"
+        [readonly]="isReadOnly"
+        matInput
+        placeholder="Recommendation by Corpus"
+        formControlName="recommendation"
+      ></textarea>
+      <mat-error *ngIf="checkCaseScreenCtr('recommendation', 'required')">recommendation is required </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="example-full-width">
+      <mat-label>Remarks by Hon’be Attorney General</mat-label>
+      <textarea rows="4" matInput placeholder="Remarks by Hon’be Attorney General" formControlName="remark"></textarea>
+      <mat-error *ngIf="checkCaseScreenCtr('remark', 'required')">Case Number is required </mat-error>
+    </mat-form-field>
+    <div>
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="formKey !== 'AG-REVIEW-CORPUS-MOM'"
+        [disabled]="!caseScreeningForm.valid"
+        (click)="saveCaseScreen()"
+      >
+        Submit
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        *ngIf="formKey === 'AG-REVIEW-CORPUS-MOM'"
+        [disabled]="!caseScreeningForm.valid"
+        (click)="updateCaseScreen()"
+      >
+        Save
+      </button>
+      <button mat-stroked-button (click)="resetForm()" color="warn">Reset</button>
+    </div>
+    <br />
+  </form>
+  <hr />
+</div>

@@ -1,0 +1,67 @@
+<form fxLayout="column" [formGroup]="investigationOfficerForm">
+  <div fxFlex="1 0 auto" fxLayout="column">
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="investigatorName" required />
+      <mat-error>Name is required!</mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label>Phone Number</mat-label>
+      <input matInput type="tel" formControlName="phoneNo" minlength="8" maxlength="8" required />
+      <mat-error></mat-error>
+      <mat-error *ngIf="investigationOfficerForm.controls['phoneNo'].hasError('required')">
+        number is required!
+      </mat-error>
+      <mat-error *ngIf="investigationOfficerForm.controls['phoneNo'].hasError('minlength')">
+        Phone Number cannot be less then 8 digits
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label>Mobile no.</mat-label>
+      <input matInput type="tel" formControlName="mobileNo" minlength="8" maxlength="8" required />
+      <mat-error *ngIf="investigationOfficerForm.controls['mobileNo'].hasError('required')">Mobile No is required!
+      </mat-error>
+      <mat-error *ngIf="investigationOfficerForm.controls['mobileNo'].hasError('minlength')">
+        Contact Number cannot be less then 8 digits
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline" fxFlex="100">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" required />
+      <mat-error *ngIf="investigationOfficerForm.controls['email'].hasError('')">Email is required!</mat-error>
+      <mat-error *ngIf="investigationOfficerForm.controls['email'].hasError('pattern')">Invalid Email </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+      <mat-label>Dzongkhag</mat-label>
+      <mat-select formControlName="dzongkhag" (selectionChange)="getPoliceStation($event.value)" required>
+        <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">{{
+          dzongkhag.dzongkhagName
+          }}</mat-option>
+      </mat-select>
+      <mat-error>Dzongkhag is required!</mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline" fxFlex="100"
+      *ngIf="referringAgency !== 'Anti-Corruption Commission'">
+      <mat-label>Police Station</mat-label>
+      <mat-select formControlName="policeStation" required>
+        <mat-option *ngFor="let policeStation of policeStations" [value]="policeStation.id">
+          {{ policeStation.policeStationName }}</mat-option>
+      </mat-select>
+      <mat-error>Police Station is required!</mat-error>
+    </mat-form-field>
+  </div>
+  <div *ngIf="role ==='Prosecutor'" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-raised-button type="button" color="primary" (click)="saveInvestigationOfficer()"
+      [disabled]="!investigationOfficerForm.valid">
+      <mat-icon>update</mat-icon> Update
+    </button>
+  </div>
+  <div *ngIf="role !=='Prosecutor'" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-raised-button type="button" color="primary" (click)="saveInvestigationOfficer()"
+      [disabled]="!investigationOfficerForm.valid">
+      <mat-icon>save</mat-icon> Save
+    </button>
+  </div>
+
+
+</form>

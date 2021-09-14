@@ -1,0 +1,13 @@
+<mat-card>
+  <mat-card-title>Staff Present Status</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let staff of staffStatus">
+        <mat-icon matListAvatar>person</mat-icon>
+        <h4 matLine>{{ staff.staffName }}</h4>
+        <p matLine class="demo-2">{{ staff.email }}</p>
+        <p matLine class="demo-2">{{ staff.status }}</p>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

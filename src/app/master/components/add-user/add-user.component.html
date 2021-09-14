@@ -1,0 +1,87 @@
+<mat-card-header>
+  <mat-card-title>Add User</mat-card-title>
+</mat-card-header>
+<mat-dialog-content>
+  <div class="col-md-12 col-lg-12">
+    <form class="form-horizontal form" [formGroup]="userForm">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Empolyee<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Employee</mat-label>
+            <mat-select formControlName="employeeId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let employee of employees" [value]="employee.id">{{
+                employee.employeeName
+              }}</mat-option>
+            </mat-select>
+            <mat-error>Employee is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Role Name<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Role Name</mat-label>
+            <mat-select formControlName="roleId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let role of roles" [value]="role.id">{{ role.roleName }}</mat-option>
+            </mat-select>
+            <mat-error>Role is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">User Name<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>User Name</mat-label>
+            <input type="text" matInput formControlName="username" placeholder="Enter User Name" />
+            <mat-icon matSuffix class="secondary-text">person</mat-icon>
+            <mat-error>User name is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Password<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input type="password" matInput formControlName="password" placeholder="Enter password Number" />
+            <mat-icon matSuffix class="secondary-text">toc</mat-icon>
+            <mat-error>Password Number is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    *ngIf="actionType === 'NEW'"
+    mat-raised-button
+    color="primary"
+    [disabled]="!userForm.valid"
+    (click)="saveUser()"
+  >
+    <mat-icon>note_add</mat-icon> Add
+  </button>
+  <button
+    *ngIf="actionType === 'EDIT'"
+    mat-raised-button
+    color="primary"
+    [disabled]="!userForm.valid"
+    (click)="updateUser()"
+  >
+    <mat-icon>update</mat-icon> Update
+  </button>
+  <button *ngIf="actionType === 'NEW'" mat-stroked-button color="warn" (click)="resetForm()">
+    <mat-icon>refresh</mat-icon> Reset
+  </button>
+  <button mat-button (click)="onClose()">Close</button>
+</mat-dialog-actions>

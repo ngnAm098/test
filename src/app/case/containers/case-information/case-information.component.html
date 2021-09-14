@@ -1,0 +1,371 @@
+<mat-card>
+  <mat-card-content>
+    <div class="row">
+      <div class="col-lg-4">
+        <mat-card-title> remand extension </mat-card-title>
+        <app-remand-extension> </app-remand-extension>
+      </div>
+      <div class="col-lg-4">
+        <mat-card-title> Conflict of Interest </mat-card-title>
+        <app-remand-extension> </app-remand-extension>
+      </div>
+      <div class="col-lg-4">
+        <mat-card-title> Adhoc Activity </mat-card-title>
+        <app-remand-extension> </app-remand-extension>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-tab-group [selectedIndex]="openTab">
+  <!-- Case Information-->
+  <mat-tab label="Case Information">
+    <div class="row" style="padding-top: 10px; padding-left: 10px">
+      
+      
+      
+      
+      <!-- <div class="col-lg-2">
+        <label id="example-radio-group-label" style="font-weight: bold">List of attachments</label>
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          [(ngModel)]="selectedDoc"
+        >
+          <mat-radio-button
+            class="example-radio-button"
+            (click)="getCaseFile(element.id)"
+            *ngFor="let element of caseAttachment"
+            [value]="element.id"
+          >
+            {{ element.documentName }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div> -->
+
+
+
+
+
+      <div class="col-lg-6">
+        <object #pdfViewer type="application/pdf" width="100%" height="1111px"></object>
+      </div>
+      <div class="col-lg-4">
+        <mat-card
+          *ngIf="
+            formKey === 'ASSIGN-DEPARTMENT' ||
+            formKey === 'ASSIGN-PROSECUTOR' ||
+            formKey === 'REVIEW-FACTS' ||
+            formKey === 'DUE-PROCESS' ||
+            formKey === 'EXAMINE-EVIDENCE' ||
+            formKey === 'CHIEF-REVIEW-CASE-RETURN' ||
+            formKey === 'Waiting for more Evidence' ||
+            formKey === 'PROSECUTOR-MORE-EVIDENCE'
+          "
+        >
+          <mat-card-header>
+            <mat-card-title>Workload Details</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <app-departmental-assignment
+              *ngIf="formKey === 'ASSIGN-DEPARTMENT'"
+              [users]="users$ | async"
+              (assignDepartmentalTask)="assignDepartmentalTask($event)"
+            ></app-departmental-assignment>
+            <!-- prosecutor-assignment -->
+            <app-prosecutor-assignment
+              *ngIf="formKey === 'ASSIGN-PROSECUTOR'"
+              [users]="users$ | async"
+              (assignProsecutor)="assignProsecutor($event)"
+            ></app-prosecutor-assignment>
+
+            <app-prosecutor-workload
+              *ngIf="
+                formKey === 'REVIEW-FACTS' ||
+                formKey === 'DUE-PROCESS' ||
+                formKey === 'EXAMINE-EVIDENCE' ||
+                formKey === 'CHIEF-REVIEW-CASE-RETURN' ||
+                formKey === 'PROSECUTOR-MORE-EVIDENCE' ||
+                formKey === 'Waiting for more Evidence'
+              "
+              [caseDetails]="caseDetails"
+              [caseAssigneeDetails]="caseAssigneeDetails"
+              [investigationOfficerDetails]="investigationOfficerDetails"
+              [incomingLetter]="incomingLetter"
+              [formKey]="formKey"
+              (saveWorkLoadDetails)="saveWorkLoadDetails($event)"
+              (submitMoreEvidenceDetails)="submitMoreEvidenceDetails($event)"
+            >
+            </app-prosecutor-workload>
+          </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="formKey === 'UPDATE-CASE-INFORMATION'">
+          <mat-card-title> Case Assignee Details </mat-card-title>
+          <mat-card-content>
+            <div *ngIf="caseAssigneeDetails">
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Prosecutor Name</mat-label>
+                <input
+                  matInput
+                  value="{{ caseAssigneeDetails.employeeDetails.employeeName }}"
+                  name="casename"
+                  readonly
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Prosecutor Number</mat-label>
+                <input
+                  matInput
+                  value="{{ caseAssigneeDetails.employeeDetails.phoneNumber }}"
+                  name="casename"
+                  readonly
+                />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Prosecutor Email Address</mat-label>
+                <input matInput value="{{ caseAssigneeDetails.employeeDetails.email }}" name="casename" readonly />
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="(isCaseDetailsExists && role === 'Chief') || role === 'AttorneyGeneral'">
+          <mat-card-content>
+            <div>
+              <app-case-detail-view
+                [caseDetails]="caseDetails"
+                [victims]="victims"
+                [defendants]="defendants"
+                [investigationOfficerDetails]="investigationOfficerDetails"
+              >
+              </app-case-detail-view>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card
+          *ngIf="
+            (!isCaseDetailsExists && formKey !== 'ASSIGN-PROSECUTOR') || (isCaseDetailsExists && role === 'Prosecutor')
+          "
+        >
+          <mat-card-header>
+            <mat-card-title>Case Details</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-accordion>
+              <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)">
+                <mat-expansion-panel-header>
+                  <mat-panel-description> Forwarding Case Information </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-referring-agency
+                  [agencys]="agencys$ | async"
+                  [caseTypes]="caseTypes$ | async"
+                  [offences]="offences$ | async"
+                  [jurisdictions]="jurisdictions$ | async"
+                  [caseDetails]="caseDetails"
+                  (saveReferringAgency)="saveReferringAgency($event)"
+                  (toggleInvestigationTitle)="toggleInvestigationTitle($event)"
+                ></app-referring-agency>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)">
+                <mat-expansion-panel-header>
+                  <mat-panel-description> Defendant Information </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-defendant
+                  [dzongkhags]="dzongkhags$ | async"
+                  [gewogs]="gewogs$ | async"
+                  [countryList]="countryList$ | async"
+                  [villages]="villages$ | async"
+                  [defendants]="defendants$ | async"
+                  (getGewogsEmit)="getGewogsByDzongkhag($event)"
+                  (getVillagesEmit)="getVillagesByGewog($event)"
+                  (saveDefendant)="saveDefendantInformation($event)"
+                >
+                </app-defendant>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)">
+                <mat-expansion-panel-header>
+                  <mat-panel-description>
+                    {{ investigationTitle }}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-investigation-office
+                  [dzongkhags]="dzongkhags$ | async"
+                  [policeStations]="policeStations$ | async"
+                  [investigationOfficerDetails]="investigationOfficerDetails"
+                  (toggleInvestigationTitle)="toggleInvestigationTitle($event)"
+                  (getPoliceStationEmit)="getPoliceStation($event)"
+                  (saveInvestigationOfficerEmit)="saveInvestigationOfficer($event)"
+                >
+                </app-investigation-office>
+              </mat-expansion-panel>
+
+              <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)">
+                <mat-expansion-panel-header>
+                  <mat-panel-description> Victim Information </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-victim
+                  [dzongkhags]="dzongkhags$ | async"
+                  [gewogs]="gewogs$ | async"
+                  [villages]="villages$ | async"
+                  [victiml]="victims$ | async"
+                  [ministrys]="ministrys$ | async"
+                  (getGewogsEmit)="getGewogsByDzongkhag($event)"
+                  (getVillagesEmit)="getVillagesByGewog($event)"
+                  (saveVictim)="saveVictimInformation($event)"
+                ></app-victim>
+              </mat-expansion-panel>
+              <br />
+              <div *ngIf="role === 'Registrar'">
+                <button mat-raised-button type="button" color="primary" (click)="saveCaseInformation()">
+                  <mat-icon>save</mat-icon>Submit Case Information
+                </button>
+              </div>
+            </mat-accordion>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </mat-tab>
+  <!-- case Brief -->
+  <mat-tab
+    label="Case Brief"
+    *ngIf="
+      formKey === 'REVIEW-FACTS' ||
+      formKey === 'DUE-PROCESS' ||
+      formKey === 'EXAMINE-EVIDENCE' ||
+      formKey === 'CASE-BRIEF' ||
+      formKey === 'CHIEF-REVIEW-CASE-BRIEF' ||
+      formKey === 'COMPLEX-CASE-GENERAL-CORPUS' ||
+      formKey === 'CHIEF-REVIEW-GENERAL-CORPUS'
+    "
+  >
+    <mat-card *ngIf="isCaseDetailsExists">
+      <mat-card-content>
+        <app-case-brief
+          [formKey]="formKey"
+          [caseDetails]="caseDetails"
+          [defendants]="defendants"
+          [investigationOfficerDetails]="investigationOfficerDetails"
+          [getCaseBrief]="caseBrief"
+          (saveCaseBriefDetails)="saveCaseBriefDetails($event)"
+          (saveCaseBriefDetailsAsDraft)="saveCaseBriefDetailsAsDraft($event)"
+          (submitCorpusRequestEmit)="submitCorpusRequest($event)"
+          (submitCorpusApproveEmit)="submitCorpusApprove($event)"
+        >
+        </app-case-brief>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+  <!-- Charge Sheet-->
+  <mat-tab label="Charge Sheet" *ngIf="formKey === 'CHARGE-SHEET'">
+    <app-charge-sheet
+      [caseDetails]="caseDetails"
+      [defendants]="defendants"
+      [getCaseBrief]="caseBrief"
+      (uploadChargeSheetFile)="uploadChargeSheetFile($event)"
+      (saveCaseChargeSheet)="saveCaseChargeSheet($event)"
+    ></app-charge-sheet>
+  </mat-tab>
+  <!-- File Case Against Court-->
+  <mat-tab label="Power Of Attorney" *ngIf="formKey === 'FILE-CASE-IN-COURT'">
+    <app-file-case
+      [caseDetails]="caseDetails"
+      [defendants]="defendants"
+      [getCaseBrief]="caseBrief"
+      [getChargeSheetDetails]="getChargeSheetDetails"
+      (uploadPOAFile)="uploadPOAFile($event)"
+      (downloadFile)="downloadFile($event)"
+      (submitPowerOfAttorney)="submitPowerOfAttorney()"
+    >
+    </app-file-case>
+  </mat-tab>
+  <!-- Update Court Hearing-->
+  <mat-tab label="Update Hearing Details" *ngIf="formKey === 'CASE-FILED'">
+    <app-update-hearing
+      [hearingStages]="hearingStage$ | async"
+      (closeHearingOutput)="closeHearingOutput()"
+    ></app-update-hearing>
+  </mat-tab>
+  <!-- Judgement-->
+  <mat-tab
+    label="Judgement"
+    *ngIf="
+      formKey === 'RECEIVE-JUDGMENT' || formKey === 'CHIEF-REVIEW-CASE-OUTCOME' || formKey === 'AG-REVIEW-CASE-OUTCOME'
+    "
+  >
+    <app-jugdement
+      [dzongkhags]="dzongkhags$ | async"
+      [formKey]="formKey"
+      [taskInstanceId]="taskInstanceId"
+      (saveCaseJudgement)="saveCaseJudgement($event)"
+      (uploadFile)="uploadFile($event)"
+      (downloadFile)="downloadFile($event)"
+      (caseReview)="caseReview($event)"
+      (agCaseReview)="agCaseReview($event)"
+    >
+    </app-jugdement>
+  </mat-tab>
+  <!-- SEND-TO-INVESTIGATING-AGENCY-->
+  <mat-tab label="Send to investigating agency" *ngIf="formKey === 'SEND-TO-INVESTIGATING-AGENCY'">
+    <app-inform-agency
+      [caseDetails]="caseDetails"
+      (uploadFile)="uploadFile($event)"
+      (sendToAgency)="sendToAgency($event)"
+    >
+    </app-inform-agency>
+  </mat-tab>
+  <!-- General Corpus -->
+  <mat-tab label="General Corpus" *ngIf="formKey === 'GENERAL-CORPUS' || formKey === 'AG-REVIEW-CORPUS-MOM'">
+    <mat-card>
+      <mat-card-content>
+        <app-general-corpus
+          [formKey]="formKey"
+          [caseDetails]="caseDetails"
+          [defendants]="defendants"
+          [investigationOfficerDetails]="investigationOfficerDetails"
+          [users]="users$ | async"
+          [generalCorpusMeetingDetails]="generalCorpusMeetingDetails"
+          (saveGeneralCorpusEmit)="saveGeneralCorpusDetails($event)"
+          (updateGeneralCorpusEmit)="updateGeneralCorpusEmit($event)"
+          (reviewCorpusMOMEmit)="reviewCorpusMOMDetails($event)"
+          (editGeneralMeetingOutEmit)="editGeneralMeetingDetails($event)"
+        >
+        </app-general-corpus>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+  <!-- Sub Corpus -->
+  <mat-tab
+    label="JUDGEMENT APPRAISAL"
+    *ngIf="formKey === 'SUB-CORPUS-MOM' || formKey === 'AG-REVIEW-JUDGEMENT-APPRAISAL'"
+  >
+    <mat-card>
+      <mat-card-content>
+        <app-sub-corpus
+          [formKey]="formKey"
+          [caseDetails]="caseDetails"
+          [defendants]="defendants"
+          [users]="users$ | async"
+          [subCorpusMeetingDetails]="subCorpusMeetingDetails"
+          (saveSubCorpusEmit)="saveSubCorpusDetails($event)"
+          (reviewCorpusMOMEmit)="reviewCorpusMOMDetails($event)"
+          (updateSubCorpusMeetingEmit)="updateCorpusMeetingDetails($event)"
+        >
+        </app-sub-corpus>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+  <!-- Sub Corpus -->
+  <mat-tab label="Appeal" *ngIf="formKey === 'WAITING-PERIOD'">
+    <mat-card>
+      <mat-card-content>
+        <!-- WAITING-PERIOD -->
+        <app-waiting-period (waitingPeriodAppeal)="waitingPeriodAppeal()"></app-waiting-period>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+  <!-- Book Meeting Hall -->
+  <mat-tab label="Schedule Meeting" *ngIf="formKey === 'HALL-BOOKING'">
+    <app-meeting-hall (submitHallBookingDetails)="submitHallBookingDetails($event)"></app-meeting-hall>
+  </mat-tab>
+</mat-tab-group>

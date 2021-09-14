@@ -1,0 +1,59 @@
+<mat-dialog-content>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+  <br />
+  <br />
+  <div class="container bootdey">
+    <div class="email-app">
+      <main>
+        <p class="text-center">New Message</p>
+        <form [formGroup]="mailForm">
+          <div class="form-row mb-3">
+            <label for="to" class="col-2 col-sm-1 col-form-label">To:</label>
+            <div class="col-10 col-sm-11">
+              <input formControlName="mailTo" type="text" class="form-control" required />
+            </div>
+          </div>
+          <div class="form-row mb-3">
+            <label for="cc" class="col-2 col-sm-1 col-form-label">CC:</label>
+            <div class="col-10 col-sm-11">
+              <input formControlName="mailCc" type="text" class="form-control" required />
+            </div>
+          </div>
+          <div class="form-row mb-3">
+            <label for="cc" class="col-2 col-sm-1 col-form-label">Subject:</label>
+            <div class="col-10 col-sm-11">
+              <input formControlName="mailSubject" type="text" class="form-control" required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-11 ml-auto">
+              <div class="form-group mt-4">
+                <textarea formControlName="mailBody" class="form-control" rows="12" required></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="form-row mb-3">
+            <label class="col-2 col-sm-1 col-form-label" style="padding-right: 100px">Attachment:</label>
+            <div>
+              <input type="file" id="file" (change)="selectFile($event.target.files)" />
+            </div>
+          </div>
+        </form>
+      </main>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <div class="form-group">
+    <button
+      mat-raised-button
+      type="button"
+      color="primary"
+      [disabled]="!mailForm.valid"
+      (click)="saveMailAttachmentDetail()"
+    >
+      Send email/Submit
+    </button>
+    <button mat-stroked-button color="warn" (click)="onClose()">Discard</button>
+  </div>
+</mat-dialog-actions>

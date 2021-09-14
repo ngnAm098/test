@@ -1,0 +1,79 @@
+<mat-card>
+  <mat-card-content>
+    <div fxFlex>
+      <mat-card-header>
+        <mat-card-title>List of Employees</mat-card-title>
+        <div fxFlex></div>
+        <mat-card-actions>
+          <button mat-raised-button (click)="openAddModal()" color="primary">
+            <mat-icon>add</mat-icon> Add Employee
+          </button>
+        </mat-card-actions>
+      </mat-card-header>
+
+      <table mat-table [dataSource]="employeeList" matSort class="mat-elevation-z1">
+        <ng-container matColumnDef="SlNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sl.No</th>
+          <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="EmployeeName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.employeeName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Designation">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Designation</th>
+          <td mat-cell *matCellDef="let element">{{ element.designation }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Cid">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Cid</th>
+          <td mat-cell *matCellDef="let element">{{ element.cid }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="EmployeeNumber">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Employee Number</th>
+          <td mat-cell *matCellDef="let element">{{ element.employeeNumber }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Organization">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Organization</th>
+          <td mat-cell *matCellDef="let element">{{ element.organization.organizationName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Department">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+          <td mat-cell *matCellDef="let element">{{ element.department.departmentName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Division">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Division Unit</th>
+          <td mat-cell *matCellDef="let element">{{ element.divisionUnit.divisionUnitName }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="editEmployee(element.id)" class="edit-button">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="delete">
+          <th class="table-heading" mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="deleteEmployee(element.id)" class="delete-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,25 @@
+<mat-tab-group [selectedIndex]="0">
+  <!-- Case Information-->
+  <mat-tab label="Case File">
+    <app-case-detail  
+    [enforcementType]="enforcementType$ | async"
+    [users]="users$ | async"
+    (initializeEnforcement)="initializeEnforcement($event)">
+  </app-case-detail>
+  </mat-tab>
+  <mat-tab label="Compensation" *ngIf="this.formKey === 'COMPENSATION'">
+    <app-compensation
+    (compensationTask)="compensationTask($event)"> 
+    </app-compensation> 
+  </mat-tab>
+  <mat-tab label="{{formKey}}" *ngIf="this.formKey === 'DISCUSSION-WITH-VICTIM' || this.formKey === 'DISCUSSION-WITH-CHIEF' || this.formKey === 'DISCUSSION-WITH-AG'">
+    <app-compensation-discussion
+    (completeUserTask)="completeUserTask($event)"></app-compensation-discussion> 
+  </mat-tab>
+  <mat-tab label="COMPENSATION PAYMENT" *ngIf="this.formKey === 'FULL-PAYMENT' || this.formKey === 'PART-PAYMENT'">
+     <app-compensation-payment
+     (instancePayment)="instancePayment($event)"
+     (partPayment)="partPayment($event)"
+     (completeUserTask)="completeUserTask($event)"></app-compensation-payment>
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,24 @@
+@import "src/app/styles/colors";
+
+table {
+  width: 100%;
+}
+
+.open-button {
+  color: $blue;
+}
+
+th {
+  color: black;
+  font-weight: 700;
+  font-size: medium;
+}
+
+td {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.mat-row:hover {
+  background-color: #89cff0;
+}

@@ -1,0 +1,81 @@
+<mat-card>
+    <div class="form-group row">
+        <label class="col-md-6 col-form-label" style="font-size: 15px;font-weight: bold;">
+            Select the form you want to generate
+        </label>
+        <div class="col-md-6">
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Choose an option</mat-label>
+                <mat-select (selectionChange)="checkPenaltyOptions($event.value)">
+                    <mat-option value="timeExtesnion">Undertaking</mat-option>
+                    <mat-option value="fullPayment">Money Receipt</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div *ngIf="showUndertaking">
+        <app-undertaking-table></app-undertaking-table>
+    </div>
+    <div *ngIf="showMoneyReceipt">
+        <app-money-receipt-table></app-money-receipt-table>
+    </div>
+</mat-card>
+<!-- Compensate Form  -->
+<mat-card>
+    <mat-toolbar style="background-color: #000000">
+        <mat-card-title style="color: white">Enforcement Type Compensation</mat-card-title>
+    </mat-toolbar>
+    <br>
+    <form [formGroup]="compensationForm">
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label style="font-size: 15px;font-weight: bold;">
+                How would you like to compensate your penalty charges?
+            </label>
+            <mat-form-field appearance="outline" class="example-full-width">
+                <mat-label>Choose an option</mat-label>
+                <mat-select formControlName="compensationType">
+                    <mat-option value="timeExtesnion">Time Extension</mat-option>
+                    <mat-option value="fullPayment">Full Payment</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-md-6">
+            <label style="font-size: 15px;font-weight: bold;">
+                Case Type
+            </label>
+            <div >
+                <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Choose an option</mat-label>
+                    <mat-select formControlName="caseType" >
+                        <mat-option value="government">Government</mat-option>
+                        <mat-option value="individule">Individule</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Action</mat-label>
+                <textarea rows="4" matInput formControlName="action" placeholder="Action" required></textarea>
+                <mat-error>required!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-md-12">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Remark</mat-label>
+                <textarea rows="4" matInput formControlName="remark" placeholder="Remark" required></textarea>
+                <mat-error>required!</mat-error>
+            </mat-form-field>
+        </div>
+        <label class="col-md-3 col-form-label" style="font-size: 15px;font-weight: bold;">
+            Attachment:
+        </label>
+        <input type="file" id="file" formControlName="attachment" (change)="uploadDocument($event.target.files)" />
+    </div>
+    </form>
+    <div class="col-md-3">
+        <button mat-raised-button color="primary" [disabled]="!compensationForm.valid" (click)="proceedCompensation()">Proceed</button>
+    </div>
+    <hr />
+</mat-card>

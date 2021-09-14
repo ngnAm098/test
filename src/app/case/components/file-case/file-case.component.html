@@ -1,0 +1,156 @@
+<div style="padding-left: 30px; padding-top: 10px">
+  <label style="padding-right: 10px; font-weight: bold">Power of Attorney</label>
+  <mat-slide-toggle (click)="changeForm()"></mat-slide-toggle>
+  <label style="padding-left: 10px; font-weight: bold">Re-Generate Charge Sheet</label>
+</div>
+<mat-card *ngIf="showPOAForm">
+  <mat-toolbar style="background-color: #000000">
+    <mat-card-title style="color: white">Power of Attorney (ཏཕཔཐདཕབམཏ)</mat-card-title>
+  </mat-toolbar>
+  <hr />
+  <mat-card-content>
+    <form class="form-horizontal" [formGroup]="powerOfAttorneyForm">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Date<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Date </mat-label>
+            <input matInput formControlName="currentDate" required />
+            <mat-error>Date is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Addressed To<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label> Addressed To </mat-label>
+            <input matInput formControlName="addressedTo" required />
+            <mat-error>Addressed To is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Court<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label> Court </mat-label>
+            <input matInput formControlName="courtAddress" required />
+            <mat-error>Court is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Defendant(s)<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Defendant(s)</mat-label>
+            <input matInput formControlName="defendantName" required />
+            <mat-error>Defendant is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Offence<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Offence</mat-label>
+            <input matInput formControlName="Offence" required />
+            <mat-error>Offence is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Case Number<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Case Number</mat-label>
+            <input matInput formControlName="caseNumber" required />
+            <mat-error>Case Number must be numeric!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">EmployeeID<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>EmployeeID</mat-label>
+            <input matInput formControlName="employeeId" required />
+            <mat-error>EmployeeID is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Prosecutor<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Prosecutor</mat-label>
+            <input matInput formControlName="prosecutor" required />
+            <mat-error>Prosecutor is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Signing Authority<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" fxFlex="100">
+            <mat-label>Signing Authority</mat-label>
+            <input matInput formControlName="chiefName" required />
+            <mat-error>Signing Authority is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <div class="form-group row" *ngIf="downloadPOA">
+      <label class="col-md-3 col-form-label" for="text-input">Attached POA<span class="text-danger">*</span>:</label>
+      <div *ngFor="let element of caseAttachment">
+        <div
+          class="col-md-12"
+          (click)="downloadAttachedFile(element.id, element.documentName)"
+          style="cursor: pointer; color: blue; text-decoration: underline"
+        >
+          {{ element.documentName }}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-9" style="padding-bottom: 10px">
+      <button mat-raised-button color="primary" (click)="generatePOA()" [disabled]="!powerOfAttorneyForm.valid">
+        Generate document
+      </button>
+      <button mat-stroked-button color="warn" (click)="resetForm()">Reset</button>
+    </div>
+  </mat-card-content>
+</mat-card>
+<mat-card *ngIf="showPOAUpload">
+  <mat-card-content>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="text-input"
+        >Attach Power of Attorney<span class="text-danger">*</span>:</label
+      >
+      <div class="col-md-9">
+        <input type="file" id="file" (change)="uploadDocument($event.target.files)" />
+        <button mat-icon-button color="primary" type="file" id="file" (click)="uploadDocumentConfirm()">
+          <span style="padding-left: 5px; color: black">
+            <button mat-raised-button color="accent">upload</button>
+          </span>
+        </button>
+      </div>
+    </div>
+    <div class="form-group row" style="padding-bottom: 10px">
+      <div class="col-md-9">
+        <button mat-raised-button color="primary" (click)="savePowerOfAttorney()" [disabled]="submitButton">
+          Proceed
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+<app-charge-sheet
+  *ngIf="showChargeSheetForm"
+  [caseDetails]="caseDetails"
+  [defendants]="defendants"
+  [getCaseBrief]="getCaseBrief"
+  [getChargeSheetDetails]="getChargeSheetDetails"
+></app-charge-sheet>

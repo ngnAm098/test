@@ -1,0 +1,135 @@
+<mat-card-header>
+  <mat-card-title>Add Employee</mat-card-title>
+</mat-card-header>
+<mat-dialog-content>
+  <div class="col-md-12 col-lg-12">
+    <form class="form-horizontal form" [formGroup]="employeeForm">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Employee Name<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Employee Name</mat-label>
+            <input type="text" matInput formControlName="employeeName" placeholder="Enter Employee Name" />
+            <mat-icon matSuffix class="secondary-text">person</mat-icon>
+            <mat-error>Employee name is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"
+          >Employee Number<span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Employee Number</mat-label>
+            <input type="text" matInput formControlName="employeeNumber" placeholder="Enter Employee Number" />
+            <mat-icon matSuffix class="secondary-text">toc</mat-icon>
+            <mat-error>Employee Number is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Organization<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Organization</mat-label>
+            <mat-select formControlName="organizationId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let organization of organizations" [value]="organization.id">{{
+                organization.organizationName
+              }}</mat-option>
+            </mat-select>
+            <mat-error>Organization is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">CID<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>CID</mat-label>
+            <input matInput formControlName="cid" name="cid" placeholder="Enter CID " />
+            <mat-icon matSuffix class="secondary-text">reorder</mat-icon>
+            <mat-error>CID Number is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Department<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Department:</mat-label>
+            <mat-select formControlName="departmentId" (selectionChange)="getDivisions($event.value)">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let department of departments" [value]="department.id">{{
+                department.departmentName
+              }}</mat-option>
+            </mat-select>
+            <mat-error>Department is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Division<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Division:</mat-label>
+            <mat-select formControlName="divisionId" (selectionChange)="getDivisionUnits($event.value)">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let division of divisions" [value]="division.id">{{
+                division.divisionName
+              }}</mat-option>
+            </mat-select>
+            <mat-error>Division is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Division Unit<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Division Unit:</mat-label>
+            <mat-select formControlName="divisionUnitId">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let divisionUnit of divisionUnits" [value]="divisionUnit.id">{{
+                divisionUnit.divisionUnitName
+              }}</mat-option>
+            </mat-select>
+            <mat-error>Division Unit is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    *ngIf="actionType === 'NEW'"
+    mat-raised-button
+    color="primary"
+    [disabled]="!employeeForm.valid"
+    (click)="saveEmployee()"
+  >
+    <mat-icon>note_add</mat-icon> Add
+  </button>
+  <button
+    *ngIf="actionType === 'EDIT'"
+    mat-raised-button
+    color="primary"
+    [disabled]="!employeeForm.valid"
+    (click)="updateEmployee()"
+  >
+    <mat-icon>update</mat-icon> Update
+  </button>
+  <button *ngIf="actionType === 'NEW'" mat-stroked-button color="warn" (click)="resetForm()">
+    <mat-icon>refresh</mat-icon> Reset
+  </button>
+  <button mat-button (click)="onClose()">Close</button>
+</mat-dialog-actions>

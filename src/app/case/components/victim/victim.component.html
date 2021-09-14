@@ -1,0 +1,195 @@
+<mat-tab-group>
+  <mat-tab label="Individual">
+
+    <div>
+      <table class="table table-bordered table-sorted">
+        <tr>
+          <th>CID</th>
+          <th>Name</th>
+          <th>Contact No</th>
+          <th>Edit</th>
+        </tr>
+        <tr *ngFor="let victim of victims">
+          <td *ngIf="victim.ministry === null">{{ victim.victimCid }}</td>
+          <td *ngIf="victim.ministry === null">{{ victim.victimName }}</td>
+          <td *ngIf="victim.ministry === null">{{ victim.victimContactNo }}</td>
+          <td *ngIf="victim.ministry === null"> <button mat-icon-button (click)="editVictim(victim.id)" class="edit-button">
+            <mat-icon>edit</mat-icon>
+          </button> </td>
+        </tr>
+      </table>
+    </div>
+
+    <form fxLayout="column" [formGroup]="individualVictimForm">
+      <div fxFlex="1 0 auto" fxLayout="column">
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>Victim CID</mat-label>
+          <input matInput placeholder="CID Number" formControlName="victimCid" type="tel" maxlength="11" maxlength="11"
+            required />
+          <mat-error *ngIf="individualVictimForm.controls['victimCid'].hasError('minlength')">
+            CID number cannot be less then 11 digits
+          </mat-error>
+          <mat-error *ngIf="individualVictimForm.controls['victimCid'].hasError('required')">
+            CID is
+            <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="victimName" required />
+          <mat-error>Name is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Date Of Birth</mat-label>
+          <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="victimDob" (click)="picker.open()" readonly />
+          <mat-datepicker-toggle matSuffix [for]="picker"> </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error>Date Of Birth is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="victimGender" required>
+            <mat-option value="M">Male</mat-option>
+            <mat-option value="F">Female</mat-option>
+          </mat-select>
+          <mat-error>Gender is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>Nationality</mat-label>
+          <mat-select formControlName="nationality" required>
+            <mat-option value="bhutanese">Bhutanese</mat-option>
+            <mat-option value="nonbhutanese">Non-Bhutanese</mat-option>
+          </mat-select>
+          <mat-error>Nationality is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex="100">
+          <mat-label>Contact No</mat-label>
+          <input matInput type="tel" formControlName="victimContactNo" minlength="8" maxlength="8" required />
+          <mat-error *ngIf="individualVictimForm.controls['victimContactNo'].hasError('required')">Contact Number is
+            required</mat-error>
+          <mat-error *ngIf="individualVictimForm.controls['victimContactNo'].hasError('minlength')">
+            Contact Number cannot be less then 8 digits
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <mat-label>Present Address</mat-label>
+          <input matInput formControlName="presentAddress" required />
+          <mat-error>Present Address is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <mat-label>Occupation</mat-label>
+          <input matInput formControlName="occupation" required />
+          <mat-error>Occupation is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <mat-label>House No</mat-label>
+          <input matInput formControlName="houseNo" required />
+          <mat-error>House No is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <mat-label>Thram No</mat-label>
+          <input matInput formControlName="thramNo" required />
+          <mat-error>Thram No is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <mat-label>Dzongkhag</mat-label>
+          <mat-select formControlName="dzongkhagId" (selectionChange)="getGewogs($event.value)" required>
+            <mat-option *ngFor="let dzongkhag of dzongkhags" [value]="dzongkhag.id">{{
+              dzongkhag.dzongkhagName
+              }}</mat-option>
+          </mat-select>
+          <mat-error>Dzongkhag is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <mat-label>Gewog</mat-label>
+          <mat-select formControlName="gewogId" (selectionChange)="getVillages($event.value)" required>
+            <mat-option *ngFor="let gewog of gewogs" [value]="gewog.id">{{ gewog.gewogName }}</mat-option>
+          </mat-select>
+          <mat-error>Gewog is required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+          <mat-label>Village</mat-label>
+          <mat-select formControlName="villageId" required>
+            <mat-option *ngFor="let village of villages" [value]="village.id">{{ village.villageName }}</mat-option>
+          </mat-select>
+          <mat-error>Village is required!</mat-error>
+        </mat-form-field>
+      </div>
+      <div *ngIf="role !== 'Prosecutor'" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button type="button" color="primary" (click)="saveVictimEmit('INDIVIDUAL')"
+          [disabled]="!individualVictimForm.valid">
+          <mat-icon>save</mat-icon> Save
+        </button>
+      </div>
+      <div *ngIf="role === 'Prosecutor'" fxLayout="row" fxLayoutAlign="center center">
+        <button mat-raised-button type="button" color="primary" (click)="saveVictimEmit('INDIVIDUAL')"
+          [disabled]="!individualVictimForm.valid">
+          <mat-icon>update</mat-icon> Update
+        </button>
+      </div>
+    </form>
+    <br />
+
+  </mat-tab>
+  <mat-tab label="Organization">
+    <div>
+      <table class="table table-bordered table-sorted">
+        <tr>
+          <th>Ministry</th>
+          <th>Contact No</th>
+          <th>Address</th>
+          <th>Edit</th>
+        </tr>
+        <tr *ngFor="let victim of victims">
+          <td *ngIf="victim.ministry !== null">{{ victim.ministry.ministryName }}</td>
+          <td *ngIf="victim.ministry !== null">{{ victim.victimContactNo }}</td>
+          <td *ngIf="victim.ministry !== null">{{ victim.presentAddress }}</td>
+          <td *ngIf="victim.ministry !== null"> <button mat-icon-button (click)="editVictim(victim.id)" class="edit-button">
+            <mat-icon>edit</mat-icon>
+          </button></td>
+        </tr>
+      </table>
+    </div>
+
+    <form fxLayout="column" [formGroup]="organizationVictimForm">
+      <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+        <mat-label>Select Ministry</mat-label>
+        <mat-select formControlName="ministryId" required>
+          <mat-option *ngFor="let ministry of ministrys" [value]="ministry.id">{{ ministry.ministryName }}</mat-option>
+        </mat-select>
+        <mat-error>Ministry is required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="100">
+        <mat-label>Contact No</mat-label>
+        <input matInput type="tel" formControlName="victimContactNo" minlength="8" maxlength="8" required />
+        <mat-error *ngIf="individualVictimForm.controls['victimContactNo'].hasError('required')">Contact Number is
+          required</mat-error>
+        <mat-error *ngIf="individualVictimForm.controls['victimContactNo'].hasError('minlength')">
+          Contact Number cannot be less then 8 digits
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+        <mat-label>Present Address</mat-label>
+        <input matInput formControlName="presentAddress" />
+      </mat-form-field>
+      <div *ngIf="role !== 'Prosecutor'" fxLayout="row">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <button mat-raised-button type="button" color="primary" (click)="saveVictimEmit('ORGANIZATION')"
+            [disabled]="!organizationVictimForm.valid">
+            <mat-icon>save</mat-icon> Save
+          </button>
+        </div>
+      </div>
+      <div *ngIf="role === 'Prosecutor'" fxLayout="row">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <button mat-raised-button type="button" color="primary" (click)="saveVictimEmit('ORGANIZATION')"
+            [disabled]="!organizationVictimForm.valid">
+            <mat-icon>update</mat-icon> Update
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-tab>
+</mat-tab-group>

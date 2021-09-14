@@ -1,0 +1,11 @@
+<mat-toolbar color="primary">Appeal Case</mat-toolbar><br />
+<div class="form-group row">
+  <label class="col-md" for="text-input">Appeal the case<span class="text-danger">*</span>:</label>
+  <div class="col-md">
+    <mat-radio-group required>
+      <mat-radio-button value="Y">Yes</mat-radio-button>
+      <mat-radio-button value="N">No</mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+<button color="primary" mat-raised-button (click)="appealCase()">Submit</button>

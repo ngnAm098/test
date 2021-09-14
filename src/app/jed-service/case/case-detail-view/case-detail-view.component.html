@@ -1,0 +1,240 @@
+<mat-card-title class="viewTitle"><strong>Forwarding Case Information</strong></mat-card-title><br>
+<mat-card-content *ngIf="caseDetails">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="control-label"><strong>Referring Agency</strong></div>
+            <div class="control-label">{{ caseDetails.referringAgency.agencyName }}</div>
+        </div>
+        <div class="col-md-4">
+            <div class="control-label"><strong>Referral Case No.</strong></div>
+            <div class="control-label">{{ caseDetails.referralCaseNo }}</div>
+        </div>
+        <div class="col-md-4">
+            <div class="control-label"><strong>Forwarding Date</strong></div>
+            <div class="control-label">{{ caseDetails.forwardingDate | date }}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="control-label"><strong>Case Type</strong></div>
+            <div class="control-label">{{ caseDetails.caseType.caseTypeName }}</div>
+        </div>
+        <div class="col-md-4">
+            <div class="control-label"><strong>Offences</strong></div>
+            <div class="control-label">{{ caseDetails.offence }}</div>
+        </div>
+        <div class="col-md-4">
+            <div class="control-label"><strong>Evidences</strong></div>
+            <div class="control-label">{{ caseDetails.evidence }}</div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="control-label"><strong>Jurisdiction</strong></div>
+            <div class="control-label">{{ caseDetails.jurisdiction.jurisdictionName }}</div>
+        </div>
+        <div class="col-md-4">
+            <div class="control-label"><strong>Remand Period</strong></div>
+            <div class="control-label">{{ caseDetails.remandPeriod }}</div>
+        </div>
+    </div>
+</mat-card-content> 
+<hr /> 
+<mat-card-title class="viewTitle"><strong>Defendant Information</strong></mat-card-title><br>
+<mat-card-content>
+    <div *ngFor="let defendant of defendants">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Name</strong></div>
+                <div class="control-label">{{ defendant.defendantName }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>DOB</strong></div>
+                <div class="control-label">{{ defendant.defendantDob | date }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Gender</strong></div>
+                <div class="control-label">{{ defendant.defendantGender === 'M' ? 'Male' : 'Female' }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4" *ngIf="defendant.defendantCid !== null">
+                <div class="control-label"><strong>CID Number</strong></div>
+                <div class="control-label">{{ defendant.defendantCid }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Nationality</strong></div>
+                <div class="control-label">{{ defendant.nationality }}</div>
+            </div>
+            <div class="col-md-4" *ngIf="defendant.country !== null">
+                <div class="control-label"><strong>Country</strong></div>
+                <div class="control-label">{{ defendant.country.countryName }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Contact No</strong></div>
+                <div class="control-label">{{ defendant.defendantContactNo }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Present Address</strong></div>
+                <div class="control-label">{{ defendant.presentAddress }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Occupation</strong></div>
+                <div class="control-label">{{ defendant.occupation }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>House No</strong></div>
+                <div class="control-label">{{ defendant.houseNo }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Thram No</strong></div>
+                <div class="control-label">{{ defendant.thramNo }}</div>
+            </div>
+            <div class="col-md-4" *ngIf="defendant.gewog !== null">
+                <div class="control-label"><strong>Gewog</strong></div>
+                <div class="control-label">{{ defendant.gewog.gewogName }}</div>
+            </div>
+            <div class="col-md-4" *ngIf="defendant.village !== null">
+                <div class="control-label"><strong>Village</strong></div>
+                <div class="control-label">{{ defendant.village.villageName }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4" *ngIf="defendant.dzongkhag !== null">
+                <div class="control-label"><strong>Dzongkhag</strong></div>
+                <div class="control-label">{{ defendant.dzongkhag.dzongkhagName }}</div>
+            </div>
+        </div>
+    </div>
+</mat-card-content>
+<hr /> 
+<div *ngIf="investigationOfficerDetails">
+    <mat-card-title class="viewTitle" *ngIf="investigationOfficerDetails.policeStation.policeStationName !== 'NA'">
+        <strong>Investigation Officer</strong>
+    </mat-card-title>
+    <mat-card-title class="viewTitle" *ngIf="investigationOfficerDetails.policeStation.policeStationName === 'NA'">
+        <strong>Integrity Promotion Officer</strong>
+    </mat-card-title>
+    <mat-card-content>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Name</strong></div>
+                <div class="control-label">{{ investigationOfficerDetails.investigatorName }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Phone No.</strong></div>
+                <div class="control-label">{{ investigationOfficerDetails.phoneNo }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Mobile No.</strong></div>
+                <div class="control-label">{{ investigationOfficerDetails.mobileNo }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Email</strong></div>
+                <div class="control-label">{{ investigationOfficerDetails.email }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Dzongkhag</strong></div>
+                <div class="control-label">{{ investigationOfficerDetails.dzongkhag.dzongkhagName }}</div>
+            </div>
+
+            <div class="col-md-4" *ngIf="investigationOfficerDetails.policeStation.policeStationName !== 'NA'">
+                <div class="control-label"><strong>Police Station</strong></div>
+                <div class="control-label">{{ investigationOfficerDetails.policeStation.policeStationName }}</div>
+            </div>
+
+        </div>
+    </mat-card-content>
+</div>
+<hr /> 
+<mat-card-title class="viewTitle"><strong>Victim Information</strong></mat-card-title><br>
+<mat-card-content>
+    <div *ngFor="let victim of victims">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Name</strong></div>
+                <div class="control-label">{{ victim.victimName }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>DOB</strong></div>
+                <div class="control-label">{{ victim.victimDob | date }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Gender</strong></div>
+                <div class="control-label">{{ victim.victimGender === 'M' ? 'Male' : 'Female' }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>CID Number</strong></div>
+                <div class="control-label">{{ victim.victimCid }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Nationality</strong></div>
+                <div class="control-label">{{ victim.nationality }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Contact No</strong></div>
+                <div class="control-label">{{ victim.victimContactNo }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Present Address</strong></div>
+                <div class="control-label">{{ victim.presentAddress }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Occupation</strong></div>
+                <div class="control-label">{{ victim.occupation }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>House No</strong></div>
+                <div class="control-label">{{ victim.houseNo }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Thram No</strong></div>
+                <div class="control-label">{{ victim.thramNo }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Gewog</strong></div>
+                <div class="control-label">{{ victim.gewog.gewogName }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Village</strong></div>
+                <div class="control-label">{{ victim.village.villageName }}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Dzongkhag</strong></div>
+                <div class="control-label">{{ victim.dzongkhag.dzongkhagName }}</div>
+            </div>
+        </div>
+    </div>
+</mat-card-content>
+<mat-card-content *ngIf="victims">
+    <div *ngFor="let victim of victims">
+        <div class="row" *ngIf="victim.ministry !== null">
+            <div class="col-md-4">
+                <div class="control-label"><strong>Ministry</strong></div>
+                <div class="control-label">{{ victim.ministry.ministryName }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Contact No.</strong></div>
+                <div class="control-label">{{ victim.victimContactNo }}</div>
+            </div>
+            <div class="col-md-4">
+                <div class="control-label"><strong>Address</strong></div>
+                <div class="control-label">{{ victim.presentAddress }}</div>
+            </div>
+        </div>
+    </div>
+</mat-card-content>

@@ -1,0 +1,44 @@
+<app-enforcement-followup></app-enforcement-followup>  
+<mat-card>
+    <mat-toolbar style="background-color: #000000">
+        <mat-card-title style="color: white">{{title}}</mat-card-title>
+    </mat-toolbar>
+    <hr />
+    <form fxLayout="column" [formGroup]="enforcementForm">
+        <div class="col-md-12">
+            <label style="font-size: 15px;font-weight: bold;">
+                Proceed the task
+            </label>
+        </div>
+        <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Choose an option</mat-label>
+            <mat-select formControlName="compensationType">
+                <mat-option value="fullPayment">Full Payment</mat-option>
+                <mat-option value="partPayment">Part Payment</mat-option>
+                <mat-option value="court" *ngIf="this.formKey === 'DISCUSSION-WITH-VICTIM'">Send to court</mat-option>
+                <mat-option value="forwardToAg" *ngIf="this.formKey === 'DISCUSSION-WITH-CHIEF'">Forward to AG</mat-option> 
+                <mat-option value="forwardToCOurt" *ngIf="this.formKey === 'DISCUSSION-WITH-AG'">Forward to Court</mat-option> 
+            </mat-select>
+        </mat-form-field>
+    </form>
+    <div>
+        <button *ngIf="this.formKey === 'DISCUSSION-WITH-VICTIM'" 
+        mat-raised-button color="primary" 
+        [disabled]="!enforcementForm.valid" 
+        (click)="proceedTask()">
+            Proceed
+        </button>
+        <button *ngIf="this.formKey === 'DISCUSSION-WITH-CHIEF'" 
+        mat-raised-button color="primary" 
+        [disabled]="!enforcementForm.valid" 
+        (click)="proceedTaskByChief()">
+            Proceed
+        </button>
+        <button *ngIf="this.formKey === 'DISCUSSION-WITH-AG'" 
+        mat-raised-button color="primary" 
+        [disabled]="!enforcementForm.valid" 
+        (click)="proceedTaskByAG()">
+            Proceed
+        </button>
+    </div>
+</mat-card>

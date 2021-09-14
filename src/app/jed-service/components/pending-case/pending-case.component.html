@@ -1,0 +1,188 @@
+<mat-card>
+    <div style="padding-bottom: 7px">
+      <mat-toolbar style="background-color: black">
+        <mat-card-title style="color: white">Pending List</mat-card-title>
+      </mat-toolbar>
+    </div>
+
+      <!-- Enforcer Head-->
+    <mat-card-content *ngIf="this.role === 'EnforcerHead'">
+
+      <mat-form-field class="px-16" style="width: 25%" appearance="outline">
+        <mat-label>Search </mat-label>
+        <input matInput (keyup)="applyFilter1($event.target.value)" placeholder="Search" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <table mat-table [dataSource]="dataSource1" matSort class="mat-elevation-z1">
+        <ng-container matColumnDef="From">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadDetails(element.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.incomingLetter.agency.agencyName }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="letterNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter No</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadDetails(element.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.incomingLetter.letterNo }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="letterDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter Date</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadDetails(element.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.incomingLetter.letterDate | date }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="Subject">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadDetails(element.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.incomingLetter.subject }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="SenderName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Name</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadDetails(element.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.incomingLetter.senderName }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="ReceiptNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt No</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadDetails(element.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.incomingLetter.receiptNo }}
+          </td>
+        </ng-container> 
+
+        <ng-container matColumnDef="caseStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Case Status</th>
+          <td mat-cell *matCellDef="let element" (click)="loadDetails(element.id,element.formKey,element.taskIntanceId)">
+            {{ element.caseStatus }}
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+      </table> 
+
+      <mat-paginator #paginator1 [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+
+    <!-- Enforcer -->
+    <mat-card-content *ngIf="this.role === 'Enforcer' || this.role === 'AttorneyGeneral'">
+
+      <mat-form-field class="px-16" style="width: 25%" appearance="outline">
+        <mat-label>Search </mat-label>
+        <input matInput (keyup)="applyFilter2($event.target.value)" placeholder="Search" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <table mat-table [dataSource]="dataSource2" matSort class="mat-elevation-z1">
+        <ng-container matColumnDef="From">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadEnforcement(element.id,element.caseInformationResponses.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.caseInformationResponses.incomingLetter.agency.agencyName }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="letterNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter No</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadEnforcement(element.id,element.caseInformationResponses.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.caseInformationResponses.incomingLetter.letterNo }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="letterDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter Date</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadEnforcement(element.id,element.caseInformationResponses.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.caseInformationResponses.incomingLetter.letterDate | date }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="Subject">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadEnforcement(element.id,element.caseInformationResponses.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.caseInformationResponses.incomingLetter.subject }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="SenderName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Name</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadEnforcement(element.id,element.caseInformationResponses.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.caseInformationResponses.incomingLetter.senderName }}
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="ReceiptNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt No</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            (click)="loadEnforcement(element.id,element.caseInformationResponses.id,element.formKey,element.taskIntanceId)"
+          >
+            {{ element.caseInformationResponses.incomingLetter.receiptNo }}
+          </td>
+        </ng-container> 
+
+        <ng-container matColumnDef="caseStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Case Status</th>
+          <td mat-cell *matCellDef="let element" (click)="loadEnforcement(element.id,element.caseInformationResponses.id,element.formKey,element.taskIntanceId)">
+            {{ element.caseStatus }}
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+      </table> 
+
+      <mat-paginator #paginator2 [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+  

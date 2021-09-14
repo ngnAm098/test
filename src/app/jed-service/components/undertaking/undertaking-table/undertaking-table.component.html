@@ -1,0 +1,82 @@
+<div align="center">
+    <mat-card-title>Enforcement Undertaking</mat-card-title>
+</div>
+<div style="float: right;">
+    <button mat-raised-button (click)="openUnderTakingDialog()" color="primary">
+        <mat-icon>add</mat-icon> New Undertaking
+    </button>
+</div>
+<mat-form-field style="width: 25%;" appearance="outline">
+    <mat-label>Search </mat-label>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+    <ng-container matColumnDef="defendantName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Defendant Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.defendantName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Gender</th>
+        <td mat-cell *matCellDef="let element">{{ element.gender }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dob">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>DOB</th>
+        <td mat-cell *matCellDef="let element">{{ element.dob | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="cid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CID/Passport No/Permit No</th>
+        <td mat-cell *matCellDef="let element">{{ element.cid }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="defendantContactNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact No</th>
+        <td mat-cell *matCellDef="let element">{{ element.defendantContactNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="defendantParentName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Parent Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.defendantParentName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="judgementNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Judgement No</th>
+        <td mat-cell *matCellDef="let element">{{ element.judgementNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="judgementDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Judgement Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.judgementDate | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="extensionDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Extension Till</th>
+        <td mat-cell *matCellDef="let element">{{ element.extensionDate | date }}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="accent" (click)="editUndertaking(element.id)" class="edit-button">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+        <th class="table-heading" mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="warn" (click)="deleteUndertaking(element.id)" class="delete-button">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

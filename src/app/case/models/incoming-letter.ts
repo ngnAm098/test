@@ -1,0 +1,30 @@
+export interface IncomingLetter {
+  id: number;
+  agencyId: number;
+  letterNo: string;
+  letterDate: Date;
+  subject: string;
+  senderName: string;
+  fileCategoryId: number;
+  receiptNo: string;
+  letterStatus: string;
+  addedBy: number;
+  addedOn: Date;
+  addedByName: string;
+  updatedBy: number;
+  updatedOn: Date;
+  updatedByName: string;
+  caseDataExist: number;
+  forwardedTo: number;
+  forwardedToName: string;
+  forwardedOn: Date;
+  hasFollowedDueProcess: boolean;
+  assignee: number;
+  caseAttachment: any;
+  taskIntanceId: string;
+  caseStatus: string;
+  formKey: string;
+  taskVariables: any;
+  caseAssessments: any;
+  image: any;
+}

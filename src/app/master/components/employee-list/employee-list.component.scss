@@ -1,0 +1,17 @@
+@import "src/app/styles/colors";
+
+table {
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.edit-button {
+  color: $blue;
+}
+
+.delete-button {
+  color: $dark-pink;
+}

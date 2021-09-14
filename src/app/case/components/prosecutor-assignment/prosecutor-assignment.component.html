@@ -1,0 +1,54 @@
+<form fxLayout="column" [formGroup]="assignmentForm">
+  <div fxFlex="1 0 auto" fxLayout="column">
+    <mat-form-field appearance="outline">
+      <mat-label>Select an option</mat-label>
+      <mat-select formControlName="assignType" (selectionChange)="toggleAssignmentType($event.value)">
+        <mat-option value="individual">Assign to individual</mat-option>
+        <mat-option value="group">Assign to a group</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="assignType === 'individual'" class="example-full-width" appearance="outline" fxFlex="100">
+      <mat-label>Select individual assignee</mat-label>
+      <mat-select formControlName="assignTo" (selectionChange)="getAssigneeName($event)">
+        <mat-option *ngFor="let user of users" [value]="user.id"> {{ user.employeeDetails.employeeName }}</mat-option>
+      </mat-select>
+      <mat-error>Please select a user</mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="assignType === 'group'" class="example-full-width" appearance="outline" fxFlex="100">
+      <mat-label>Select group assignee</mat-label>
+      <mat-select formControlName="assignTo" (selectionChange)="addGroupAssignee($event)">
+        <mat-option *ngFor="let user of users" [value]="user.id"> {{ user.employeeDetails.employeeName }}</mat-option>
+      </mat-select>
+      <mat-error>Please select a user</mat-error>
+    </mat-form-field>
+    <div fxFlex></div>
+    <div *ngIf="assignType === 'group'">
+      <table class="table table-bordered table-sorted">
+        <tr>
+          <th>Name</th>
+          <th align="center">Is team lead?</th>
+        </tr>
+        <tr *ngFor="let assignee of groupAssignees">
+          <td>
+            {{ assignee.employeeName }}
+          </td>
+          <td align="center">
+            <mat-radio-button (click)="assigneeTeamLead(assignee.id)" class="example-margin"></mat-radio-button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div fxFlex></div>
+    <label id="example-radio-group-label">Has Followed Due Process?</label>
+    <mat-radio-group formControlName="followedDueProcess" aria-label="Has Followed Due Process?">
+      <mat-radio-button value="Y">Yes</mat-radio-button>
+      <mat-radio-button value="N">No</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <button mat-raised-button type="button" color="primary" (click)="assignTask()" [disabled]="!assignmentForm.valid">
+      <mat-icon>assignment</mat-icon> Assign
+    </button>
+  </div>
+</form>

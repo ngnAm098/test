@@ -1,0 +1,145 @@
+<mat-toolbar style="background-color: #000000">
+  <mat-card-title style="color: white">Money Receipt</mat-card-title> 
+</mat-toolbar><hr/>
+<mat-dialog-content class="mat-typography">
+  <div class="col-md-12 col-lg-12">
+    <form class="form-horizontal form" [formGroup]="handReceipt">
+      <!-- Victim  -->
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">Receipt No<span class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Receipt No</mat-label>
+            <input matInput formControlName="receiptNo" readonly />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">Victim Name<span class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Victim Name</mat-label>
+            <input matInput formControlName="victimName" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">CID/Passport No/Permit No<span
+            class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>CID/Passport No/Permit No</mat-label>
+            <input matInput formControlName="victimCid" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">Amount<span class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" formControlName="amount" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">Amount in word<span
+            class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Amount in word</mat-label>
+            <input matInput type="text" formControlName="amountInWord" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">Cheque No<span class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Cheque No</mat-label>
+            <input matInput formControlName="chequeNo" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Defendant  -->
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">Defendant Name<span
+            class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Defendant Name</mat-label>
+            <input matInput formControlName="defendantName" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">CID/Passport No/Permit No<span
+            class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>CID/Passport No/Permit No</mat-label>
+            <input matInput formControlName="defendantCid" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input">Judgement No<span class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Judgement No</mat-label>
+            <input matInput formControlName="judgementNo" required />
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input"> Judgement Date <span
+            class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select a date</mat-label>
+            <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="judgementDate"
+              (click)="picker.open()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker"> </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-6 col-form-label" for="text-input"> Received Date <span
+            class="text-danger">*</span>:</label>
+        <div class="col-md-6">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select a date</mat-label>
+            <input matInput [matDatepicker]="picker1" [max]="maxDate" formControlName="receivedDate"
+              (click)="picker1.open()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker1"> </mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error>required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+    <div class="example-button-row">
+      <button mat-raised-button color="primary" [disabled]="!handReceipt.valid" (click)="generateReceipt()">
+        Generate Receipt
+      </button>
+    </div>
+  </div>
+</mat-dialog-content><hr/>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="warn" (click)="onDismiss()"><mat-icon>close</mat-icon>Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="enableSaveButton" (click)="saveMoneyReceipt()">
+    Save Receipt
+  </button>
+</mat-dialog-actions>

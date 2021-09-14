@@ -1,0 +1,186 @@
+<mat-card-title class="viewTitle"><strong>Case Information</strong></mat-card-title>
+<mat-card-content>
+  <div class="container-fluid">
+    <div *ngIf="caseDetails">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="control-label"><strong>Case Name</strong></div>
+          <div class="control-label">{{ caseDetails.caseName }}</div>
+        </div>
+        <div class="col-md-3">
+          <div class="control-label"><strong> Case No.</strong></div>
+          <div class="control-label">{{ caseDetails.referralCaseNo }}</div>
+        </div>
+        <div class="col-md-3">
+          <div class="control-label"><strong>Offence</strong></div>
+          <div class="control-label">{{ caseDetails.offence }}</div>
+        </div>
+        <div class="col-md-3">
+          <div class="control-label"><strong>Jurisdiction</strong></div>
+          <div class="control-label">{{ caseDetails.jurisdiction.jurisdictionName }}</div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="row">
+      <div *ngFor="let defendant of defendants" class="col-md-3">
+        <div class="control-label"><strong>Defendant Name</strong></div>
+        <div class="control-label">{{ defendant.defendantName }}</div>
+      </div>
+      <div *ngIf="investigationOfficerDetails" class="col-md-3">
+        <div class="control-label" *ngIf="investigationOfficerDetails.policeStation.policeStationName !== 'NA'">
+          <strong>Police Station</strong>
+        </div>
+        <div class="control-label">{{ investigationOfficerDetails.policeStation.policeStationName }}</div>
+      </div>
+    </div>
+  </div>
+</mat-card-content>
+<hr />
+<mat-card-content>
+  <mat-card-title class="viewTitle"><strong>Case Brief Information</strong></mat-card-title>
+  <div>
+    <form class="form-horizontal" [formGroup]="caseBriefForm">
+      <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>Facts</mat-label>
+        <textarea rows="4" matInput placeholder="Comment" formControlName="facts"></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>Issues</mat-label>
+        <textarea rows="4" matInput placeholder="Comment" formControlName="issues"></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>Rules and Laws</mat-label>
+        <textarea rows="4" matInput placeholder="Comment" formControlName="ruleslaws"></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>Application </mat-label>
+        <textarea rows="4" matInput placeholder="Comment" formControlName="application"></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>Conclusion</mat-label>
+        <textarea rows="4" matInput placeholder="Comment" formControlName="conclusion"></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+
+      <div *ngIf="formKey === 'CHIEF-REVIEW-CASE-BRIEF'">
+        <div class="form-group row">
+          <div class="col-md-12">
+            <label class="form-label col-md-6" style="font-weight: bold">Accept the Case Brief?</label>
+            <mat-radio-group class="form-label col-md-6" (change)="onCheckboxChange($event.value)" required>
+              <mat-radio-button value="Y">Yes</mat-radio-button>
+              <mat-radio-button value="N">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div *ngIf="showCaseCategory">
+          <mat-form-field appearance="outline" class="example-full-width" *ngIf="caseDetails">
+            <mat-label>Choose Case Category</mat-label>
+            <mat-select formControlName="caseCategory" (selectionChange)="enableSubmit()">
+              <mat-option value="ACC" *ngIf="caseDetails.referringAgency.agencyName === 'Anti-Corruption Commission'">
+                Anti-Corruption Commission</mat-option
+              >
+              <mat-option
+                value="Complex"
+                *ngIf="caseDetails.referringAgency.agencyName !== 'Anti-Corruption Commission'"
+                >Complex
+              </mat-option>
+              <mat-option value="Others" *ngIf="caseDetails.referringAgency.agencyName !== 'Anti-Corruption Commission'"
+                >Simple Case
+              </mat-option>
+            </mat-select>
+            <mat-error>required!</mat-error>
+          </mat-form-field>
+        </div>
+        <div *ngIf="showCommentBox">
+          <mat-form-field class="example-full-width" appearance="outline" fxFlex="100">
+            <mat-label>Leave Justification</mat-label>
+            <textarea type="text" matInput formControlName="comment" placeholder="Give justification"> </textarea>
+            <mat-error>Comment is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br />
+  <div class="col-md-9" style="padding-bottom: 10px">
+    <mat-card-footer>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="caseBriefDetails('draft')"
+        *ngIf="formKey === 'REVIEW-FACTS' || formKey === 'EXAMINE-EVIDENCE' || formKey === 'DUE-PROCESS'"
+        [disabled]="!caseBriefForm.valid"
+      >
+        Save
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="caseBriefDetails('submit')"
+        *ngIf="formKey === 'CASE-BRIEF'"
+        [disabled]="!caseBriefForm.valid"
+      >
+        Procced
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="caseBriefDetails('submit')"
+        *ngIf="formKey === 'CHIEF-REVIEW-CASE-BRIEF'"
+        [disabled]="chiefSubmit"
+      >
+        Approve
+      </button>
+      <button
+        mat-stroked-button
+        color="warn"
+        *ngIf="
+          formKey === 'REVIEW-FACTS' ||
+          formKey === 'DUE-PROCESS' ||
+          formKey === 'EXAMINE-EVIDENCE' ||
+          formKey === 'CASE-BRIEF' ||
+          formKey === 'CHIEF-REVIEW-CASE-BRIEF'
+        "
+      >
+        Reset
+      </button>
+    </mat-card-footer>
+  </div>
+</mat-card-content>
+<br /><br />
+<div class="form-group row" *ngIf="formKey === 'COMPLEX-CASE-GENERAL-CORPUS'">
+  <div class="col-lg-12">
+    <label class="form-label col-lg-3">General Corpus Required?</label>
+    <mat-radio-group class="form-label col-lg-6" (change)="onCheckboxChange($event.value)" required>
+      <mat-radio-button value="Y">Yes</mat-radio-button>
+      <mat-radio-button value="N">No</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="col-md-9" style="padding-bottom: 10px">
+    <button mat-raised-button color="primary" (click)="submitCorpusRequest('request')" [disabled]="chiefSubmit">
+      Submit
+    </button>
+  </div>
+  <br />
+</div>
+<div class="form-group row" *ngIf="formKey === 'CHIEF-REVIEW-GENERAL-CORPUS'">
+  <div class="col-lg-12">
+    <label class="form-label col-lg-3">Approve General Corpus Meeting</label>
+    <mat-radio-group class="form-label col-lg-6" (change)="onCheckboxChange($event.value)" required>
+      <mat-radio-button value="Y">Yes</mat-radio-button>
+      <mat-radio-button value="N">No</mat-radio-button>
+    </mat-radio-group>
+  </div>
+  <div class="col-md-9" style="padding-bottom: 10px">
+    <button mat-raised-button color="primary" (click)="submitCorpusRequest('approve')" [disabled]="chiefSubmit">
+      Submit
+    </button>
+  </div>
+  <br />
+</div>

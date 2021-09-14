@@ -1,0 +1,79 @@
+<div align="center">
+    <mat-card-title>Money Receipt</mat-card-title>
+</div>
+<div style="float: right;">
+    <button mat-raised-button (click)="openReceiptDialog()" color="primary">
+        <mat-icon>add</mat-icon> New Money Receipt
+    </button>
+</div>
+<mat-form-field style="width: 25%;" appearance="outline">
+    <mat-label>Search </mat-label>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+    <mat-icon matSuffix>search</mat-icon>
+</mat-form-field><br>
+<div style="float: right;">
+    <label style="font-size: 15px; font-weight: bold;"> Total: {{totalEnforcementAmount | currency:'Nu.':'code'}} </label>
+    <label style="font-size: 15px; font-weight: bold; padding-left: 15px;"> Balance: {{balanceEnforcementAmount | currency:'Nu.':'code'}} </label> 
+</div>
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+    <ng-container matColumnDef="receiptNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>receiptNo</th>
+        <td mat-cell *matCellDef="let element">{{ element.receiptNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="victimName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Victim Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.victimName }}</td>
+    </ng-container> 
+
+    <ng-container matColumnDef="victimCid">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CID/Passport No/Permit No</th>
+        <td mat-cell *matCellDef="let element">{{ element.victimCid }}</td>
+    </ng-container>  
+
+    <ng-container matColumnDef="judgementNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Judgement No</th>
+        <td mat-cell *matCellDef="let element">{{ element.judgementNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="judgementDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Judgement Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.judgementDate | date }}</td>
+    </ng-container>   
+
+    <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+        <td mat-cell *matCellDef="let element">{{ element.amount | currency:'Nu.':'code' }}</td>
+    </ng-container>  
+
+    <ng-container matColumnDef="chequeNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Cheque No</th>
+        <td mat-cell *matCellDef="let element">{{ element.chequeNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="receivedDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Received Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.receivedDate }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="accent" (click)="editReceipt(element.id)" class="edit-button">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+        <th class="table-heading" mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="warn" (click)="deleteReceipt(element.id)" class="delete-button">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </td>
+    </ng-container> 
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+<mat-paginator #paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>

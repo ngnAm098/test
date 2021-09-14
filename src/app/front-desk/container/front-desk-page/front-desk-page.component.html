@@ -1,0 +1,9 @@
+<app-letter-receipt-list
+  [incomingLetters]="incomingLetters$ | async"
+  [registeredIncomingLetters]="registeredIncomingLetters$ | async"
+  (editOutput)="editIncomingLetterDetails($event)"
+  (deleteOutput)="deleteIncomingLetterDetails($event)"
+  (forwardOutput)="forwardIncomingLetter($event)"
+  (addOutput)="refreshIncomingLetterList($event)"
+>
+</app-letter-receipt-list>

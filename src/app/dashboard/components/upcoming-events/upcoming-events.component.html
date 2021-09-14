@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-card-title>Upcoming Events</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      <div *ngFor="let element of scheduledMeetingList">
+        <mat-card (click)="meetingDetails(element.id)" style="cursor: pointer">
+          <mat-card-header class="mat-card-header"></mat-card-header>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item>
+                <mat-icon matListAvatar>markunread_mailbox</mat-icon>
+                <h4 matLine>{{ element.meetingTitle }} on {{ element.meetingDate | date }}</h4>
+                <p matLine class="demo-2">
+                  {{ element.startTime }} - {{ element.endTime }} in {{ element.meetingHall }}
+                </p>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

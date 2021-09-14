@@ -1,0 +1,18 @@
+<button class="notification-button" mat-mini-fab [matMenuTriggerFor]="bell">
+  <mat-icon matBadge="4" matBadgeColor="warn" class="notification-button__icon">notifications_none</mat-icon>
+</button>
+<mat-menu #bell="matMenu" xPosition="before" class="notification-menu">
+  <button mat-menu-item class="notification-menu__button">
+    <mat-icon class="notification-menu__icon_pink">notifications_none</mat-icon>Today you have a Corpus Meeting at 10:00
+    AM
+  </button>
+  <button mat-menu-item class="notification-menu__button">
+    <mat-icon class="notification-menu__icon_pink">notifications_none</mat-icon>Appeal due date for case RBP/2021-06/001
+  </button>
+  <button mat-menu-item class="notification-menu__button">
+    <mat-icon class="notification-menu__icon_pink">notifications_none</mat-icon>This is just a simple notification
+  </button>
+  <button mat-menu-item class="notification-menu__button">
+    <mat-icon class="notification-menu__icon_pink">notifications_none</mat-icon>This is just a simple notification
+  </button>
+</mat-menu>

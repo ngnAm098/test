@@ -1,0 +1,101 @@
+<mat-toolbar color="primary">Update court hearing</mat-toolbar><br />
+<mat-divider></mat-divider>
+<mat-dialog-content>
+  <mat-card>
+    <div class="col-md-12 col-lg-12">
+      <form class="form-horizontal" [formGroup]="courtHearingForm">
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input"
+            >Hearing stage<span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field appearance="outline" fxFlex="100">
+              <mat-label>Select hearing stage</mat-label>
+              <mat-select formControlName="hearingStage" [disabled]="freezeHearingStage" required>
+                <mat-option></mat-option>
+                <mat-option *ngFor="let element of hearingStages" [value]="element.stage">{{
+                  element.stage
+                }}</mat-option>
+              </mat-select>
+              <mat-error>required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">
+            Hearing date <span class="text-danger">*</span>:</label
+          >
+          <div class="col-md-9">
+            <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Select a Hearing date</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                [min]="previousDate"
+                formControlName="hearingDate"
+                (click)="picker.open()"
+                [disabled]="freezeHearingStage"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"> </mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error>Hearing Date is required</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-md-3 col-form-label" for="text-input">Subject<span class="text-danger">*</span>:</label>
+          <div class="col-md-9">
+            <mat-form-field fxFlex="100" appearance="outline">
+              <mat-label>Subject</mat-label>
+              <textarea formControlName="comment" matInput required></textarea>
+              <mat-error>Subject required!</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <div mat-dialog-actions class="col-md-9" style="padding-bottom: 10px">
+        <button mat-raised-button [disabled]="!courtHearingForm.valid" (click)="submitHearing()" color="accent">
+          Save
+        </button>
+        <button mat-stroked-button color="warn" (click)="resetForm()">Reset</button>
+      </div>
+    </div>
+  </mat-card>
+  <!-- Table -->
+  <mat-card>
+    <mat-toolbar color="primary">Hearing Details</mat-toolbar><br />
+    <hr />
+    <table mat-table [dataSource]="dataSource" matTableFilter matSort>
+      <ng-container matColumnDef="hearingStage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hearing Stage</th>
+        <td mat-cell *matCellDef="let element">{{ element.hearingStage }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="hearingDate">
+        <th mat-header-cell *matHeaderCellDef>Hearing Date</th>
+        <td mat-cell *matCellDef="let element">{{ element.hearingDate | date }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="subject">
+        <th mat-header-cell *matHeaderCellDef>Subject</th>
+        <td mat-cell *matCellDef="let element">{{ element.comment }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Edit</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary">
+            <mat-icon color="primary" (click)="editHearing(element.id)">edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card>
+  <mat-divider></mat-divider>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-stroked-button color="warn" (click)="onClose()"><mat-icon>close</mat-icon>Close</button>
+</mat-dialog-actions>

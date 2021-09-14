@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-content>
+    <mat-calendar [selected]="selectedDate" (selectedChange)="onSelect($event)"></mat-calendar>
+  </mat-card-content>
+  <mat-card-actions align="center">
+    <button (click)="openAddModal()" mat-raised-button color="primary" *ngIf="formKey !== 'HALL-BOOKING'">
+      <mat-icon>insert_drive_file</mat-icon> Add Letter
+    </button>
+    <button mat-raised-button color="primary" *ngIf="formKey !== 'HALL-BOOKING'">
+      <mat-icon>check_circle</mat-icon> Add Task
+    </button>
+    <button mat-raised-button color="primary" (click)="scheduleMeeting()">
+      <mat-icon>check_circle</mat-icon>Schedule Meeting
+    </button>
+  </mat-card-actions>
+</mat-card>

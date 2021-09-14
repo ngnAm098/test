@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-title>Meeting Hall Availability</mat-card-title>
+  <mat-card-content>
+    <div *ngFor="let element of conferenceHallList">
+      <a mat-list-item>
+        <h4 matLine>{{ element.hall }}</h4>
+        <p matLine class="demo-2">{{ element.hallStatus }}</p>
+      </a>
+    </div>
+  </mat-card-content>
+</mat-card>

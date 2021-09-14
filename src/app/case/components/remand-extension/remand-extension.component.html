@@ -1,0 +1,73 @@
+<mat-accordion *ngIf="caseDetails" (click)="getRemandDetails()">
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title> Remand extension </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="form-group row">
+      <mat-form-field appearance="outline" class="example-full-width" fxFlex="100">
+        <mat-label>Case Number</mat-label>
+        <input readonly matInput type="text" value="{{ caseDetails.referralCaseNo }}" required />
+        <mat-icon matSuffix class="secondary-text">reorder</mat-icon>
+      </mat-form-field>
+    </div>
+    <!-- <div class="form-group row">
+            <mat-form-field appearance="outline" class="example-full-width" fxFlex="100">
+                <mat-label>Accused Name</mat-label>
+                <input readonly matInput type="text" [(ngModel)]="defendants" required placeholder="Defendants" />
+            </mat-form-field>
+        </div>  -->
+    <div class="form-group row">
+      <mat-form-field appearance="outline" class="example-full-width" fxFlex="100">
+        <mat-label>Offence</mat-label>
+        <input
+          readonly
+          matInput
+          type="text"
+          value="{{ caseDetails.offence }}"
+          name="Offence"
+          required
+          placeholder="Defendants"
+        />
+      </mat-form-field>
+    </div>
+    <form class="form-horizontal" [formGroup]="remandForm">
+      <div class="form-group row">
+        <mat-form-field appearance="outline" class="example-full-width" fxFlex="100">
+          <mat-label>Number of days required</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="extensionNo"
+            name="days"
+            required
+            placeholder="Number of Days"
+          />
+          <mat-error *ngIf="checkRemandCtr('extensionNo', 'required')"> Days required </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-group row">
+        <mat-form-field appearance="outline" class="example-full-width" fxFlex="100">
+          <mat-label>Reason for extension</mat-label>
+          <textarea matInput formControlName="reason" name="reason" required placeholder="Reason"></textarea>
+          <mat-error *ngIf="checkRemandCtr('reason', 'required')">Reason is required</mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+    <mat-card-footer>
+      <div *ngIf="!remandExtensionDetails">
+        <button mat-raised-button color="primary" [disabled]="!remandForm.valid" (click)="saveRemandEmit('submit')">
+          Submit
+        </button>
+        <button mat-stroked-button color="warn">Reset</button>
+      </div>
+
+      <div *ngIf="remandExtensionDetails">
+        <button mat-raised-button color="primary" [disabled]="!remandForm.valid" (click)="saveRemandEmit('save')">
+          Save
+        </button>
+        <button mat-stroked-button color="warn">Reset</button>
+      </div>
+    </mat-card-footer>
+    <br />
+  </mat-expansion-panel>
+</mat-accordion>

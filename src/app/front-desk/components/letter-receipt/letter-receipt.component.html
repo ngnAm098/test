@@ -1,0 +1,157 @@
+<mat-toolbar style="background-color: black">
+  <mat-card-title style="color: white">Receipt Incoming Letter</mat-card-title>
+</mat-toolbar>
+<mat-dialog-content>
+  <div class="col-md-12 col-lg-12">
+    <form class="form-horizontal form" [formGroup]="receiptForm">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">From<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Agency</mat-label>
+            <mat-select formControlName="agencyId">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let agency of agencys" [value]="agency.id">{{ agency.agencyName }}</mat-option>
+            </mat-select>
+            <mat-error>Agency is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Letter Number<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Letter Number</mat-label>
+            <input matInput formControlName="letterNo" name="letterNo" placeholder="" />
+            <mat-icon matSuffix class="secondary-text">reorder</mat-icon>
+            <mat-error>Letter Number is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input"> Dated <span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select a date</mat-label>
+            <input matInput [matDatepicker]="picker" [max]="maxDate" formControlName="letterDate"
+              (click)="picker.open()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="picker"> </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>Letter Date is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Subject<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Subject</mat-label>
+            <input type="text" matInput formControlName="subject" placeholder="Enter the subject" />
+            <mat-icon matSuffix class="secondary-text">toc</mat-icon>
+            <mat-error>Subject is required!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Sender Name<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Sender Name</mat-label>
+            <input type="text" matInput formControlName="senderName" placeholder="Enter name of the sender" />
+            <mat-icon matSuffix class="secondary-text">person</mat-icon>
+            <mat-error>Sender name is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">File Category<span class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select File Category:</mat-label>
+            <mat-select formControlName="fileCategoryId" (selectionChange)="createSequence($event)">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let fileCategory of fileCategorys" [value]="fileCategory.id">{{
+                fileCategory.fileCategory
+                }}</mat-option>
+            </mat-select>
+            <mat-error>File Category is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label" for="text-input">Receipt Number<span
+            class="text-danger">*</span>:</label>
+        <div class="col-md-9">
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Receipt Number</mat-label>
+            <input matInput formControlName="receiptNo" placeholder="Receipt number" readonly />
+            <mat-icon matSuffix class="secondary-text">reorder</mat-icon>
+            <mat-error>Receipt Number is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- For only edit only -->
+      <div class="form-group row" *ngIf="this.actionType === 'EDIT'">
+        <label class="col-md-3 col-form-label" for="text-input">Attached File<span class="text-danger">*</span>:</label>
+        <div *ngFor="let element of caseAttachment">
+          <div
+            class="col-md-12"
+            (click)="downloadFile(element.id, element.documentName)"
+            style="cursor: pointer; color: blue; text-decoration: underline"
+          >
+            {{ element.documentName }}
+          </div>
+        </div>
+      </div>
+      <!-- For only edit only -->
+      <div class="form-group row" *ngFor="let element of addFileArray">
+        <label class="col-md-3 col-form-label" for="text-input">
+          <span *ngIf="this.actionType === 'EDIT'">Replace Attachment</span>
+          <span *ngIf="this.actionType !== 'EDIT'">Attach File</span>
+          <span class="text-danger">*</span>:</label
+        >
+        <div class="col-md-6">
+          <input type="file" formControlName="attachLetter" id="file" (change)="selectFile($event)" />
+        </div>
+        <div style="padding-right: 5px">
+          <button mat-stroked-button color="primary" (click)="addMoreArray(element.id)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+        <div>
+          <button mat-stroked-button color="warn" (click)="subMoreArray(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+  <button
+    *ngIf="actionType === 'NEW'"
+    mat-raised-button
+    color="primary"
+    [disabled]="!receiptForm.valid"
+    (click)="saveIncomingLetter()"
+  >
+    <mat-icon>note_add</mat-icon> Add
+  </button>
+  <button *ngIf="actionType === 'EDIT'" mat-raised-button color="primary" [disabled]="!receiptForm.valid"
+    (click)="updateIncomingLetter()">
+    <mat-icon>update</mat-icon> Update
+  </button>
+  <button *ngIf="actionType === 'NEW'" mat-stroked-button color="warn" (click)="resetForm()">
+    <mat-icon>refresh</mat-icon> Reset
+  </button>
+  <button mat-button (click)="onClose()">
+    <mat-icon>close </mat-icon> Close
+  </button>
+</mat-dialog-actions>

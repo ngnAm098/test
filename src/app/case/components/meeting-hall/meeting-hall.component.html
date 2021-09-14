@@ -1,0 +1,27 @@
+<div class="charts-wrapper">
+  <div class="chart">
+    <app-event-calendar></app-event-calendar>
+  </div>
+  <div class="chart">
+    <app-hall-availability></app-hall-availability>
+    <mat-card>
+      <mat-card-content>
+        <mat-card-title>Reservation Detail</mat-card-title>
+        <div *ngFor="let element of userScheduledMeetingList">
+          <p matLine class="demo-2">Meeting Title: {{ element.meetingTitle }}</p>
+          <p matLine class="demo-2">Scheduled Date: {{ element.meetingDate | date }}</p>
+          <p matLine class="demo-2">Meeting Hall: {{ element.meetingHall }}</p>
+          <p matLine class="demo-2">Time: {{ element.startTime }} - {{ element.endTime }}</p>
+        </div>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="submitHallBooking()"
+          matTooltip="Click after scheduling the corpus meeting"
+        >
+          <mat-icon>done</mat-icon> Finished scheduling meeting
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

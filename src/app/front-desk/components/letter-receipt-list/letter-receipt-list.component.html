@@ -1,0 +1,132 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>List of received letters</mat-card-title>
+    <div fxFlex></div>
+    <mat-card-actions>
+      <button mat-raised-button (click)="openAddModal()" color="primary"><mat-icon>add</mat-icon> Add Letter</button>
+    </mat-card-actions>
+  </mat-card-header>
+  <table mat-table [dataSource]="incomingLetters" matSort class="mat-elevation-z1">
+    <ng-container matColumnDef="From">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+      <td mat-cell *matCellDef="let element">{{ element.agency.agencyName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="letterNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter No</th>
+      <td mat-cell *matCellDef="let element">{{ element.letterNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="letterDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter Date</th>
+      <td mat-cell *matCellDef="let element">{{ element.letterDate | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Subject">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
+      <td mat-cell *matCellDef="let element">{{ element.subject }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="SenderName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.senderName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="FileCategory">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>File Category</th>
+      <td mat-cell *matCellDef="let element">{{ element.fileCategory.fileCategory }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="ReceiptNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt No</th>
+      <td mat-cell *matCellDef="let element">{{ element.receiptNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Edit</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="editIncomingLetterEmit(element.id)" class="edit-button">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th class="table-heading" mat-header-cell *matHeaderCellDef mat-sort-header>Delete</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="deleteIncomingLetterEmit(element.id)" class="delete-button">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="forward">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Forward</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="forwardIncomingLetterEmit(element.id)" color="primary">
+          <mat-icon>forward</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>List of registered letters</mat-card-title>
+  </mat-card-header>
+  <table mat-table [dataSource]="registeredIncomingLetters" matSort class="mat-elevation-z1">
+    <ng-container matColumnDef="From">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>From</th>
+      <td mat-cell *matCellDef="let element">{{ element.agency.agencyName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="letterNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter No</th>
+      <td mat-cell *matCellDef="let element">{{ element.letterNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="letterDate">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Letter Date</th>
+      <td mat-cell *matCellDef="let element">{{ element.letterDate | date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Subject">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject</th>
+      <td mat-cell *matCellDef="let element">{{ element.subject }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="SenderName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Sender Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.senderName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="FileCategory">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>File Category</th>
+      <td mat-cell *matCellDef="let element">{{ element.fileCategory.fileCategory }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="ReceiptNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Receipt No</th>
+      <td mat-cell *matCellDef="let element">{{ element.receiptNo }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="forwardedTo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Forwarded To</th>
+      <td mat-cell *matCellDef="let element">{{ element.forwardedToName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="addedOn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Added On</th>
+      <td mat-cell *matCellDef="let element">{{ element.addedOn | date }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</mat-card>

@@ -1,0 +1,63 @@
+<div fxFlex>
+  <mat-sidenav-container fxFill>
+    <mat-sidenav #sidenav [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile" [disableClose]="!isMobile"
+      ngClass.gt-sm="has-border">
+      <mat-toolbar color="primary">
+        <img src="assets/70px.png " style="width: 60px" />
+        <span translate class="elms">ELMS System</span>
+      </mat-toolbar>
+      <nav>
+        <mat-list>
+          <mat-divider></mat-divider>
+          <a mat-list-item routerLink="{{ routes.DASHBOARD }}" routerLinkActive="active"
+            (click)="isMobile && sidenav.close()">
+            <mat-icon>home</mat-icon>&nbsp;<span translate>Home</span>
+          </a>
+          <mat-divider></mat-divider>
+
+          <div *ngIf="role === 'Admin'">
+            <a mat-list-item routerLink="{{ routes.EMPLOYEEDETAILS }}" routerLinkActive="active"
+              (click)="isMobile && sidenav.close()">
+              <mat-icon>email</mat-icon>&nbsp;<span translate>Employee Details</span>
+            </a>
+            <mat-divider></mat-divider>
+
+            <a mat-list-item routerLink="{{ routes.USERDETAILS }}" routerLinkActive="active"
+              (click)="isMobile && sidenav.close()">
+              <mat-icon>email</mat-icon>&nbsp;<span translate>User Lists</span>
+            </a>
+
+          </div>
+
+
+          <mat-divider></mat-divider>
+          <a *ngIf="role === 'FrontDesk'" mat-list-item routerLink="{{ routes.RECEIVELETTER }}"
+            routerLinkActive="active" (click)="isMobile && sidenav.close()">
+            <mat-icon>email</mat-icon>&nbsp;<span translate>Receipt</span>
+          </a>
+          <mat-divider></mat-divider>
+          <a *ngIf="role === 'FrontDesk'" mat-list-item routerLink="{{ routes.DISPATCHLETTER }}"
+            routerLinkActive="active" (click)="isMobile && sidenav.close()">
+            <mat-icon>send</mat-icon>&nbsp;<span translate>Dispatch</span>
+          </a>
+        </mat-list>
+        <mat-divider></mat-divider>
+      </nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <mat-toolbar color="primary" class="mat-elevation-z6">
+        <button class="menu-button" mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+
+        <div fxFlex></div>
+
+        <div class="header-toolbar">
+          <app-notification></app-notification>
+          <app-user [user]="user" (signOut)="signOut()"></app-user>
+        </div>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

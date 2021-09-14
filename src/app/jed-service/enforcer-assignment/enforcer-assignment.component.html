@@ -1,0 +1,50 @@
+<mat-toolbar style="background-color: #000000">
+  <mat-card-title style="color: white">Enforcement Form</mat-card-title> </mat-toolbar
+><br />
+<mat-dialog-content class="mat-typography">
+  <mat-card-content>
+    <form fxLayout="column" [formGroup]="enforcementForm"> 
+      <div fxFlex="1 0 auto" fxLayout="column">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput value=" {{currentDate | date}}" readonly> 
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Total Amount</mat-label>
+          <input matInput type="number" formControlName="totalAmount" required> 
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Select attorney</mat-label>
+          <mat-select formControlName="assignTo" required>
+            <mat-option *ngFor="let user of users" [value]="user"> {{ user.employeeDetails.employeeName }}</mat-option>
+          </mat-select>
+          <mat-error>required!</mat-error>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Action</mat-label>
+          <textarea rows="4" matInput formControlName="action" placeholder="Action" required></textarea>
+          <mat-error>required!</mat-error>
+        </mat-form-field> 
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label>Remark</mat-label>
+          <textarea rows="4" matInput formControlName="remark" placeholder="Remark" required></textarea>
+          <mat-error>required!</mat-error>
+        </mat-form-field> 
+      </div> 
+    </form>
+  </mat-card-content> 
+  <hr /> 
+</mat-dialog-content>
+<mat-dialog-actions align="end"> 
+  <div>
+    <button mat-raised-button type="button" color="primary" (click)="saveEnforcement()" [disabled]="!enforcementForm.valid">
+      <mat-icon>assignment</mat-icon> Assign
+    </button>
+  </div>
+  <div style="padding-left: 10px">
+    <button mat-stroked-button color="warn" (click)="formReset()">Reset</button>
+  </div>
+  <div style="padding-left: 10px">
+    <button mat-stroked-button color="warn" (click)="onNoClick()"><mat-icon>close </mat-icon> Close</button>
+  </div>
+</mat-dialog-actions>

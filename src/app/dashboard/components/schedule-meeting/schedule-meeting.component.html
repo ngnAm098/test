@@ -1,0 +1,64 @@
+<h1 mat-dialog-title color="primary">New Event</h1>
+<div mat-dialog-content>
+  <form [formGroup]="scheduleForm">
+    <div class="row">
+      <mat-form-field class="example-half-width" appearance="outline">
+        <mat-label>Add Meeting Title</mat-label>
+        <input matInput formControlName="meetingTitle" placeholder="Add meeting title" />
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-half-width" appearance="outline">
+        <mat-label>Date</mat-label>
+        <input matInput formControlName="meetingDate" [matDatepicker]="picker" (click)="picker.open()" readonly />
+        <mat-datepicker-toggle matSuffix [for]="picker"> </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+    </div>
+ 
+    <div class="row">
+      <mat-form-field class="example-half-width" appearance="outline">
+        <mat-label>Start time</mat-label>
+        <mat-select formControlName="startTime">
+          <mat-option *ngFor="let element of timeLists" value="{{ element.value }}">{{ element.value }}</mat-option>
+        </mat-select>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-half-width" appearance="outline">
+        <mat-label>End Time</mat-label>
+        <mat-select formControlName="endTime">
+          <mat-option *ngFor="let element of timeLists" value="{{ element.value }}">{{ element.value }}</mat-option>
+        </mat-select>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="example-half-width" appearance="outline">
+        <mat-label>Choose Meeting Hall</mat-label>
+        <mat-select formControlName="meetingHall">
+          <mat-option *ngFor="let element of conferenceHall" value="{{ element.hall }}">{{ element.hall }}</mat-option>
+        </mat-select>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Purpose</mat-label>
+        <textarea formControlName="comment" matInput placeholder="Purpose"></textarea>
+        <mat-error>required!</mat-error>
+      </mat-form-field>
+    </div>
+
+  </form>
+  <div mat-dialog-actions style="float: right">
+    <button mat-stroked-button color="warn" (click)="onNoClick()">Close</button>
+    <button mat-stroked-button color="primary" *ngIf="this.actionType === 'ADD'" (click)="addNewTask()">Save</button>
+    <button mat-stroked-button color="accent" *ngIf="enableUpdateButton" (click)="cancelMeeting()">
+      Cancel/Close Meeting
+    </button>
+    <button mat-stroked-button color="primary" *ngIf="enableUpdateButton" (click)="updateTask()">Update</button>
+  </div>
+</div>
